@@ -17,11 +17,12 @@ export interface Match {
   team1Id: { _id: string; name: string; tag: string; logoUrl: string | null }
   team2Id: { _id: string; name: string; tag: string; logoUrl: string | null }
   scheduledAt: string
-  status: "scheduled" | "live" | "finished"
+  status: "scheduled" | "live" | "finished" | "completed" | "cancelled"
   tournamentId: { _id: string; name: string; game: string }
   bestOf: number
   scoreTeam1: number
   scoreTeam2: number
+  winnerId: { _id: string; name: string; tag: string } | null
 }
 
 export interface AuthUser {
@@ -112,6 +113,17 @@ export interface Bet {
   potentialWin: number
   status: "pending" | "won" | "lost" | "cancelled"
   createdAt: string
+}
+
+export async function getMatchById(id: string): Promise<Match | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/matches/${id}`, { cache: "no-store" })
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.match ?? null
+  } catch {
+    return null
+  }
 }
 
 export async function getBets(token: string): Promise<Bet[]> {
