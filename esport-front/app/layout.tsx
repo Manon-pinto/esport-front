@@ -1,29 +1,32 @@
-import type { Metadata } from "next";
-import Header from "@/components/layout/Header";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext"
+import type { Metadata } from "next"
+import { Orbitron } from "next/font/google"
+import "./globals.css"
+import Header from "@/components/layout/Header"
+import Navbar from "@/components/layout/Navbar"
+import Footer from "@/components/layout/Footer"
+
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+})
 
 export const metadata: Metadata = {
-  title: "Esport Pro",
-  description: "Plateforme Esport Pro",
-};
+  title: "ESPORT PRO",
+  description: "Plateforme de tournois esport",
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={orbitron.variable}>
       <body>
-        <div className="page-wrapper">
+        <AuthProvider>
           <Header />
           <Navbar />
-          <main className="main-content">{children}</main>
+          <main>{children}</main>
           <Footer />
-        </div>
+        </AuthProvider>
       </body>
     </html>
-  );
+  )
 }
