@@ -6,7 +6,6 @@ import Link from "next/link"
 import { useAuth } from "@/context/AuthContext"
 import { getMatchs, type Match } from "@/lib/api"
 import MatchCard from "@/components/matchs/MatchCard"
-import ParisForm from "@/components/paris/PariForm"
 
 export default function ParisPage() {
   const { isAuthenticated, user } = useAuth()
@@ -14,8 +13,6 @@ export default function ParisPage() {
 
   const [matchs, setMatchs] = useState<Match[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedMatch, setSelectedMatch] = useState<Match | null>(null)
-  const [successMsg, setSuccessMsg] = useState<string | null>(null)
 
   useEffect(() => {
     if (!isAuthenticated) { router.push("/auth/login"); return }
@@ -32,19 +29,6 @@ export default function ParisPage() {
   if (!isAuthenticated) return null
 
   const points = user?.points ?? 0
-
-  function openBetForm(match: Match) {
-    setSelectedMatch(match)
-    setSuccessMsg(null)
-  }
-
-  function closeBetForm() {
-    setSelectedMatch(null)
-  }
-
-  function handleSuccess(message: string) {
-    setSuccessMsg(message)
-  }
 
   return (
     <div className="main-content">
@@ -66,14 +50,6 @@ export default function ParisPage() {
           </div>
         </div>
 
-        {/* Message global succès */}
-        {successMsg && !selectedMatch && (
-          <div className="paris-alert paris-alert-success">
-            ✓ {successMsg}
-            <Link href="/historique" className="paris-alert-link">Voir mes paris →</Link>
-          </div>
-        )}
-
         {/* Liste des matchs */}
         {loading ? (
           <div className="hist-empty">Chargement des matchs…</div>
@@ -89,30 +65,15 @@ export default function ParisPage() {
             </Link>
           </div>
         ) : (
-          <>
-            <div className="matches-list">
-              {matchs.map((m) => (
-                <div key={m.id}>
-                  <MatchCard match={m} />
-                </div>
-              ))}
-            </div>
-
-
-            {/* Formulaire de pari (en dehors de la liste) */}
-            {selectedMatch && (
-              <div style={{ marginTop: "1.5rem" }}>
-                <ParisForm
-                  match={selectedMatch}
-                  userPoints={points}
-                  onClose={closeBetForm}
-                  onSuccess={handleSuccess}
-                />
+          <div className="matches-list">
+            {matchs.map((m) => (
+              <div key={m.id}>
+                <MatchCard match={m} />
               </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
+            ))}
+          </div>
+              )}
+            </div>
+          </div>
+        )
+      }
