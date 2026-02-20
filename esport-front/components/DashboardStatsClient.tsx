@@ -29,7 +29,7 @@ export default function DashboardStatsClient() {
       }
     }
     fetchStats()
-  }, [user]) // Se recharge quand l'utilisateur change
+  }, [user]) //recharge l'utilisateur change
 
   if (loading) {
     return (

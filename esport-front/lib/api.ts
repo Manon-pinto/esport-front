@@ -162,10 +162,17 @@ export interface DashboardStats {
 
 export async function getDashboardStats(token?: string): Promise<DashboardStats> {
   try {
-    const tournaments = await getTournaments()
-    
+    const [tournaments, matches] = await Promise.all([getTournaments(), getMatchs()])
+
+    const liveTournamentIds = new Set(
+      matches
+        .filter((m) => m.status === "live")
+        .map((m) => m.tournamentId?._id)
+        .filter(Boolean)
+    )
+
     const activeTournaments = tournaments.filter(
-      (t) => t.status === "ongoing"
+      (t) => t.status === "ongoing" || liveTournamentIds.has(t._id)
     ).length
 
     // Si l'utilisateur est connecté, on récupère ses paris pour calculer les statistiques personnelles

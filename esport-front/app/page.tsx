@@ -16,7 +16,7 @@ export default async function HomePage() {
           Suivez les tournois, placez vos paris et gagnez des points virtuels !
         </p>
         <Link href="/tournois" className="hero-btn">
-          Voir les tournois en cours
+          Voir les tournois →
         </Link>
       </div>
 
@@ -28,7 +28,7 @@ export default async function HomePage() {
           <Link href="/tournois" className="voir-plus-btn">Voir tout →</Link>
         </div>
         <div className="tournois-grid">
-          {tournaments.map((t) => (
+          {tournaments.slice(0, 2).map((t) => (
             <TournamentCard key={t._id} tournament={t} />
           ))}
         </div>
