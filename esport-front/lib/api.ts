@@ -1,3 +1,5 @@
+import { Key } from "react"
+
 const BASE_URL = "http://localhost:3000"
 
 export interface Tournament {
@@ -13,6 +15,7 @@ export interface Tournament {
 }
 
 export interface Match {
+  id: Key | null | undefined
   _id: string
   team1Id: { _id: string; name: string; tag: string; logoUrl: string | null }
   team2Id: { _id: string; name: string; tag: string; logoUrl: string | null }
