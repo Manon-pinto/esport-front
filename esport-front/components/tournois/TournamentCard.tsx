@@ -9,7 +9,7 @@ function formatDate(raw: string) {
 
 function formatPrize(n: number) {
   if (!n || isNaN(n)) return "—"
-  return new Intl.NumberFormat("fr-FR").format(n) + " €"
+  return new Intl.NumberFormat("fr-FR").format(n) + " pts"
 }
 
 const STATUS_LABEL: Record<string, string> = {

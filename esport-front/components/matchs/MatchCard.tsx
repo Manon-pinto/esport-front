@@ -1,16 +1,5 @@
 import Link from "next/link"
-
-interface Match {
-  _id: string
-  team1Id: { _id: string; name: string; tag: string }
-  team2Id: { _id: string; name: string; tag: string }
-  scheduledAt: string
-  status: "scheduled" | "live" | "finished"
-  tournamentId: { _id: string; name: string; game: string }
-  bestOf: number
-  scoreTeam1: number
-  scoreTeam2: number
-}
+import type { Match } from "@/lib/api"
 
 export default function MatchCard({ match }: { match: Match }) {
   const isLive = match.status === "live"

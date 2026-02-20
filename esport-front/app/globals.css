@@ -1599,3 +1599,307 @@ main {
   .hist-dates       { align-items: flex-start; }
   .hist-finance     { flex-wrap: wrap; }
 }
+
+/* ============================================
+   PAGE PARIS
+   ============================================ */
+
+/* En-tête solde */
+.paris-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.paris-solde {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.25);
+  border-radius: 12px;
+  padding: 14px 20px;
+}
+
+.paris-solde-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.paris-solde-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f6e05e;
+}
+
+/* Alertes */
+.paris-alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.paris-alert-success {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+}
+
+.paris-alert-error {
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  margin-bottom: 1rem;
+}
+
+.paris-alert-link {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4ade80;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+/* Carte match pariable */
+.paris-match-card {
+  background: #1a1f3d;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-left: 3px solid #667EEA;
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+
+.paris-match-card--live {
+  border-left-color: #ef4444;
+  background: linear-gradient(135deg, rgba(239,68,68,0.04), #1a1f3d);
+}
+
+.paris-match-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.paris-match-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.paris-match-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+/* Panneau formulaire de pari */
+.paris-form-panel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(102, 126, 234, 0.15);
+}
+
+.paris-form-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.paris-form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #a0aec0;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.3px;
+}
+
+/* Choix d'équipe */
+.paris-team-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.paris-team-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  background: rgba(102, 126, 234, 0.07);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: #fff;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  text-align: left;
+}
+
+.paris-team-btn:hover {
+  background: rgba(102, 126, 234, 0.14);
+  border-color: rgba(102, 126, 234, 0.4);
+}
+
+.paris-team-btn--selected {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: #667EEA;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25);
+  transform: translateY(-1px);
+}
+
+.paris-team-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667EEA, #764BA2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.paris-team-tag {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.paris-team-name {
+  display: block;
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.paris-team-sep {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a5568;
+  flex-shrink: 0;
+}
+
+/* Champ mise */
+.paris-form-field {
+  margin-bottom: 1.25rem;
+}
+
+.paris-amount-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.paris-amount-input {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.paris-quick-bets {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.paris-quick-btn {
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.25);
+  border-radius: 6px;
+  color: #a0aec0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.paris-quick-btn:hover {
+  background: rgba(102, 126, 234, 0.2);
+  color: #fff;
+}
+
+.paris-gain-preview {
+  margin-top: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Boutons action */
+.paris-form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.paris-submit-btn {
+  margin-top: 0;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  min-width: 160px;
+}
+
+.paris-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paris-cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(102, 126, 234, 0.25);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  padding: 0.65rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.paris-cancel-btn:hover {
+  background: rgba(102, 126, 234, 0.08);
+  color: #fff;
+}
+
+.paris-cancel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .paris-header       { flex-direction: column; }
+  .paris-solde        { align-items: flex-start; }
+  .paris-team-choice  { flex-direction: column; }
+  .paris-team-btn     { width: 100%; }
+  .paris-amount-input { width: 100%; }
+}

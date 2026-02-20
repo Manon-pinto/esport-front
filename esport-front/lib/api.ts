@@ -138,3 +138,60 @@ export async function getBets(token: string): Promise<Bet[]> {
     return []
   }
 }
+
+
+export async function placeBet(token: string, matchId: string, predictedWinnerId: string, amount: number): Promise<Bet> {
+  const res = await fetch(`${BASE_URL}/api/bets`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ matchId, predictedWinnerId, amount }),
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.message || "Erreur lors de la validation du pari")
+  return data.bet
+}
+
+export interface DashboardStats {
+  activeTournaments: number
+  activeBets: number
+  totalWinnings: number
+}
+
+export async function getDashboardStats(token?: string): Promise<DashboardStats> {
+  try {
+    const tournaments = await getTournaments()
+    
+    const activeTournaments = tournaments.filter(
+      (t) => t.status === "ongoing"
+    ).length
+
+    // Si l'utilisateur est connecté, on récupère ses paris pour calculer les statistiques personnelles
+    let activeBets = 0
+    let totalWinnings = 0
+
+    if (token) {
+      const bets = await getBets(token)
+      
+      activeBets = bets.filter(
+        (b) => b.status === "pending"
+      ).length
+
+      totalWinnings = bets
+        .filter((b) => b.status === "won")
+        .reduce((sum, b) => sum + (b.potentialWin || 0), 0)
+    }
+
+    return {
+      activeTournaments,
+      activeBets,
+      totalWinnings,
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération des stats:", error)
+    return {
+      activeTournaments: 0,
+      activeBets: 0,
+      totalWinnings: 0,
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import TournamentCard from "@/components/tournois/TournamentCard"
 import MatchCard from "@/components/matchs/MatchCard"
-import StatsCards from "@/components/StatsCards"
+import DashboardStatsClient from "@/components/DashboardStatsClient"
 import Link from "next/link"
 import { getTournaments, getMatchs } from "@/lib/api"
 
@@ -20,11 +20,7 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      <StatsCards stats={[
-        { label: "TOURNOIS ACTIFS", value: 12 },
-        { label: "PARIS EN COURS", value: 5 },
-        { label: "GAINS TOTAUX", value: "2,450" },
-      ]} />
+      <DashboardStatsClient />
 
       <section className="tournois-section">
         <div className="tournois-section-header">
