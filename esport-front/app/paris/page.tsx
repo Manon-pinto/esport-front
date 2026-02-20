@@ -67,9 +67,7 @@ export default function ParisPage() {
         ) : (
           <div className="matches-list">
             {matchs.map((m) => (
-              <div key={m.id}>
-                <MatchCard match={m} />
-              </div>
+            <MatchCard key={m._id} match={m} />
             ))}
           </div>
               )}

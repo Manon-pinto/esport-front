@@ -1,6 +1,6 @@
 "use client"
-
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState, useSyncExternalStore } from "react"
+import { useRouter } from "next/navigation"
 
 interface UserInfo {
   username: string
@@ -10,6 +10,7 @@ interface UserInfo {
 interface AuthContextType {
   isAuthenticated: boolean
   user: UserInfo | null
+  login: (token: string) => void
   logout: () => void
   refreshUser: () => void
 }
@@ -17,32 +18,34 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
+  login: () => {},
   logout: () => {},
   refreshUser: () => {},
 })
 
+function subscribeToStorage(callback: () => void) {
+  window.addEventListener("storage", callback)
+  return () => window.removeEventListener("storage", callback)
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem("token")
-  })
+  // useSyncExternalStore : pas de setState dans un effet, pas de hydration mismatch
+  const token = useSyncExternalStore(
+    subscribeToStorage,
+    () => localStorage.getItem("token"),
+    () => null, // snapshot serveur (SSR) : pas de token
+  )
+  const isAuthenticated = !!token
 
-  const [user, setUser] = useState<UserInfo | null>(() => {
-    try {
-      const stored = localStorage.getItem("user")
-      return stored ? JSON.parse(stored) : null
-    } catch {
-      return null
-    }
-  })
-
+  const [user, setUser] = useState<UserInfo | null>(null)
   const [fetchTick, setFetchTick] = useState(0)
+  const router = useRouter()
 
   const refreshUser = () => setFetchTick((n) => n + 1)
 
+  // Fetch user data (setState dans .then() = callback, autorisé par le lint)
   useEffect(() => {
-    if (!isAuthenticated) return
-    const token = localStorage.getItem("token")
-    if (!token) return
+    if (!isAuthenticated || !token) return
 
     fetch("http://localhost:3000/api/auth/me", {
       headers: { Authorization: `Bearer ${token}` },
@@ -55,18 +58,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(updated)
       })
       .catch(() => {})
-  }, [isAuthenticated, fetchTick])
+  }, [isAuthenticated, token, fetchTick])
+
+  const login = (newToken: string) => {
+    localStorage.setItem("token", newToken)
+    refreshUser()
+  }
 
   const logout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
-    setIsAuthenticated(false)
     setUser(null)
-    window.location.href = "/"
+    router.push("/")
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, logout, refreshUser }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   )
