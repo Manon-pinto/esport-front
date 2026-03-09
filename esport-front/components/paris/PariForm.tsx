@@ -23,12 +23,12 @@ export default function ParisForm({ match, userPoints, onClose, onSuccess }: Par
     if (!selectedTeamId) return
 
     const mise = parseInt(amount, 10)
-    if (isNaN(mise) || mise <= 0) {
-      setErrorMsg("Veuillez entrer une mise valide.")
+    if (isNaN(mise) || mise < 10) {
+      setErrorMsg("La mise minimum est de 10 points.")
       return
     }
-    if (mise > userPoints) {
-      setErrorMsg("Mise supérieure à votre solde de points.")
+    if (mise > Math.min(userPoints, 1000)) {
+      setErrorMsg(mise > 1000 ? "La mise maximum est de 1000 points." : "Mise supérieure à votre solde de points.")
       return
     }
 
@@ -41,7 +41,7 @@ export default function ParisForm({ match, userPoints, onClose, onSuccess }: Par
     setSubmitting(true)
     setErrorMsg(null)
     try {
-      await placeBet(token, match._id, selectedTeamId, mise)
+      await placeBet(token, match._id, selectedTeamId, mise, 1.9)
       onSuccess("Pari placé avec succès !")
       onClose()
     } catch (err: unknown) {
@@ -93,14 +93,14 @@ export default function ParisForm({ match, userPoints, onClose, onSuccess }: Par
         {/* Mise */}
         <div className="paris-form-field">
           <label className="paris-form-label" htmlFor={`amount-${match._id}`}>
-            Mise (max {userPoints.toLocaleString()} pts)
+            Mise (min 10 — max {Math.min(userPoints, 1000).toLocaleString()} pts)
           </label>
           <div className="paris-amount-row">
             <input
               id={`amount-${match._id}`}
               type="number"
-              min={1}
-              max={userPoints}
+              min={10}
+              max={Math.min(userPoints, 1000)}
               className="auth-input paris-amount-input"
               placeholder="ex : 100"
               value={amount}

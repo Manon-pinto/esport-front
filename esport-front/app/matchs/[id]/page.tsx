@@ -10,17 +10,6 @@ const STATUS_LABEL: Record<string, string> = {
   cancelled:  "ANNULÉ",
 }
 
-const GAME_ICON: Record<string, string> = {
-  "League of Legends": "🏆",
-  "Valorant":          "🎯",
-  "CS:GO":             "💥",
-  "CS2":               "💥",
-  "Dota 2":            "🗡️",
-  "Overwatch":         "🛡️",
-  "Rocket League":     "🚀",
-  "Rainbow Six Siege": "🔵",
-}
-
 function formatDate(raw: string) {
   const d = new Date(raw)
   if (isNaN(d.getTime())) return "—"
@@ -45,8 +34,6 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
   const isCancelled = match.status === "cancelled"
   const canBet      = match.status === "scheduled" || match.status === "live"
 
-  const gameIcon = GAME_ICON[match.tournamentId.game] ?? "🎮"
-
   const team1Won = isFinished && match.winnerId?._id === match.team1Id._id
   const team2Won = isFinished && match.winnerId?._id === match.team2Id._id
 
@@ -69,7 +56,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
             {STATUS_LABEL[match.status]}
           </span>
           <span className="md-tournament-label">
-            {gameIcon} {match.tournamentId.name}
+            {match.tournamentId.name}
           </span>
         </div>
 
@@ -82,7 +69,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
               <span className="md-team-tag">{match.team1Id.tag}</span>
               <span className="md-team-name">{match.team1Id.name}</span>
             </div>
-            {team1Won && <span className="md-winner-crown">👑</span>}
+            {team1Won && <span className="md-winner-crown">★</span>}
           </div>
 
           {/* Score / VS */}
@@ -105,7 +92,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
 
           {/* Équipe 2 */}
           <div className={`md-team md-team--right${team2Won ? " md-team--winner" : ""}${isFinished && !team2Won ? " md-team--loser" : ""}`}>
-            {team2Won && <span className="md-winner-crown">👑</span>}
+            {team2Won && <span className="md-winner-crown">★</span>}
             <div className="md-team-info md-team-info--right">
               <span className="md-team-tag">{match.team2Id.tag}</span>
               <span className="md-team-name">{match.team2Id.name}</span>
@@ -118,7 +105,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
         {canBet && (
           <div className="md-bet-row">
             <Link href="/paris" className="md-bet-btn">
-              💰 Parier sur ce match
+              Parier sur ce match
             </Link>
           </div>
         )}
@@ -136,7 +123,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
         </div>
         <div className="md-info-card">
           <span className="md-info-label">Jeu</span>
-          <span className="md-info-value">{gameIcon} {match.tournamentId.game}</span>
+          <span className="md-info-value">{match.tournamentId.game}</span>
         </div>
         <div className="md-info-card">
           <span className="md-info-label">Date</span>
@@ -154,7 +141,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
           <div className="md-result-card">
             <span className="md-result-label">Vainqueur</span>
             <div className="md-result-winner">
-              <span className="md-result-crown">👑</span>
+              <span className="md-result-crown">★</span>
               <span className="md-result-tag">{match.winnerId.tag}</span>
               <span className="md-result-name">{match.winnerId.name}</span>
             </div>

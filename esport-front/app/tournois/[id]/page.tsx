@@ -10,17 +10,6 @@ const STATUS_LABEL: Record<string, string> = {
   cancelled: "ANNULÉ",
 }
 
-const GAME_ICON: Record<string, string> = {
-  "League of Legends": "🏆",
-  "Valorant":          "🎯",
-  "CS:GO":             "💥",
-  "CS2":               "💥",
-  "Dota 2":            "🗡️",
-  "Overwatch":         "🛡️",
-  "Rocket League":     "🚀",
-  "Rainbow Six Siege": "🔵",
-}
-
 function formatDate(raw: string) {
   const d = new Date(raw)
   if (isNaN(d.getTime())) return "—"
@@ -46,7 +35,6 @@ export default async function TournoiDetailPage({ params }: { params: Promise<{ 
   const scheduled = matchs.filter((m) => m.status === "scheduled")
   const finished  = matchs.filter((m) => m.status === "finished")
   const isLive    = tournament.status === "ongoing"
-  const gameIcon  = GAME_ICON[tournament.game] ?? "🎮"
 
   return (
     <div className="main-content">
@@ -65,7 +53,7 @@ export default async function TournoiDetailPage({ params }: { params: Promise<{ 
             {STATUS_LABEL[tournament.status]}
           </span>
           <h1 className="td-title">{tournament.name}</h1>
-          <p className="td-detail-game">{gameIcon} {tournament.game}</p>
+          <p className="td-detail-game">{tournament.game}</p>
         </div>
       </div>
 

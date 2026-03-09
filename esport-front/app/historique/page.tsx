@@ -21,7 +21,7 @@ const STATUS_CLASS: Record<string, string> = {
 }
 
 export default function HistoriquePage() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, refreshUser } = useAuth()
   const router = useRouter()
   const [bets, setBets] = useState<Bet[]>([])
   const [loading, setLoading] = useState(true)
@@ -31,10 +31,11 @@ export default function HistoriquePage() {
     const token = localStorage.getItem("token")
     if (!token) return
 
+    refreshUser()
     getBets(token)
       .then((data) => setBets(data))
       .finally(() => setLoading(false))
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, router, refreshUser])
 
   if (!isAuthenticated) return null
 
@@ -83,7 +84,7 @@ export default function HistoriquePage() {
           <div className="hist-empty">Chargement…</div>
         ) : bets.length === 0 ? (
           <div className="hist-empty">
-            <p style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>📋</p>
+            
             <p style={{ fontWeight: 700, marginBottom: "0.4rem" }}>Aucun pari trouvé</p>
             <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
               Vous n&apos;avez pas encore placé de paris.
@@ -157,8 +158,8 @@ export default function HistoriquePage() {
                     </div>
 
                     <div className="hist-dates">
-                      <span>🎮 Match : {matchDate}</span>
-                      <span>📅 Paris : {date}</span>
+                      <span>Match : {matchDate}</span>
+                      <span>Paris : {date}</span>
                     </div>
                   </div>
                 </div>

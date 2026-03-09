@@ -1,17 +1,6 @@
 import Link from "next/link"
 import { getMatchs } from "@/lib/api"
 
-const GAME_ICON: Record<string, string> = {
-  "League of Legends": "🏆",
-  "Valorant":          "🎯",
-  "CS:GO":             "💥",
-  "CS2":               "💥",
-  "Dota 2":            "🗡️",
-  "Overwatch":         "🛡️",
-  "Rocket League":     "🚀",
-  "Rainbow Six Siege": "🔵",
-}
-
 function formatDate(raw: string) {
   const d = new Date(raw)
   if (isNaN(d.getTime())) return "—"
@@ -107,7 +96,6 @@ function MatchRow({ match }: { match: Awaited<ReturnType<typeof getMatchs>>[numb
   const isLive     = match.status === "live"
   const isFinished = match.status === "finished" || match.status === "completed"
   const canBet     = match.status === "scheduled" || match.status === "live"
-  const gameIcon   = GAME_ICON[match.tournamentId.game] ?? "🎮"
 
   return (
     <div className={`match-card ${isLive ? "match-card-live" : ""}`}>
@@ -156,8 +144,8 @@ function MatchRow({ match }: { match: Awaited<ReturnType<typeof getMatchs>>[numb
 
       <div className="match-footer">
         <div className="match-meta">
-          <span>📅 {formatDate(match.scheduledAt)}</span>
-          <span>{gameIcon} {match.tournamentId.name}</span>
+          <span>{formatDate(match.scheduledAt)}</span>
+          <span>{match.tournamentId.name}</span>
         </div>
         <div style={{ display: "flex", gap: "0.5rem" }}>
           {canBet && (

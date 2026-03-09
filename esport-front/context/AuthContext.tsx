@@ -1,10 +1,11 @@
 "use client"
-import { createContext, useContext, useEffect, useState, useSyncExternalStore } from "react"
+import { createContext, useCallback, useContext, useEffect, useState, useSyncExternalStore } from "react"
 import { useRouter } from "next/navigation"
 
 interface UserInfo {
   username: string
   points: number
+  role: string
 }
 
 interface AuthContextType {
@@ -41,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [fetchTick, setFetchTick] = useState(0)
   const router = useRouter()
 
-  const refreshUser = () => setFetchTick((n) => n + 1)
+  const refreshUser = useCallback(() => setFetchTick((n) => n + 1), [])
 
   // Fetch user data (setState dans .then() = callback, autorisé par le lint)
   useEffect(() => {
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data) return
-        const updated = { username: data.user.username, points: data.user.points }
+        const updated = { username: data.user.username, points: data.user.points, role: data.user.role }
         localStorage.setItem("user", JSON.stringify(updated))
         setUser(updated)
       })

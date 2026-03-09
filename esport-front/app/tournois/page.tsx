@@ -4,7 +4,7 @@ import TournoiList from "@/components/tournois/TournoiList"
 export default async function TournoisPage() {
   const tournaments = await getTournaments()
 
-  const liveCount = tournaments.filter((t) => t.status === "live").length
+  const liveCount = tournaments.filter((t) => t.status === "ongoing").length
 
   return (
     <div className="main-content">

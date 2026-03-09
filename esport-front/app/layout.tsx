@@ -1,14 +1,16 @@
 import { AuthProvider } from "@/context/AuthContext"
 import type { Metadata } from "next"
-import { Orbitron } from "next/font/google"
+import { Exo_2 } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/layout/Header"
 import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
+import LightningEffect from "@/components/effects/LightningEffect"
 
-const orbitron = Orbitron({
+const exo2 = Exo_2({
   subsets: ["latin"],
   variable: "--font-orbitron",
+  weight: ["400", "600", "700", "800", "900"],
 })
 
 export const metadata: Metadata = {
@@ -18,9 +20,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={orbitron.variable}>
+    <html lang="fr" className={exo2.variable}>
       <body>
         <AuthProvider>
+          <LightningEffect />
           <Header />
           <Navbar />
           <main>{children}</main>

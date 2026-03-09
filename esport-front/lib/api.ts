@@ -129,9 +129,52 @@ export async function getMatchById(id: string): Promise<Match | null> {
   }
 }
 
+export interface LeaderboardUser {
+  _id: string
+  username: string
+  points: number
+}
+
+export async function getLeaderboard(): Promise<LeaderboardUser[]> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/auth/leaderboard`, { cache: "no-store" })
+    if (!res.ok) return []
+    const data = await res.json()
+    return Array.isArray(data.leaderboard) ? data.leaderboard : []
+  } catch {
+    return []
+  }
+}
+
+export interface Standing {
+  _id: string
+  tournamentId: { _id: string; name: string; game: string }
+  teamId: { _id: string; name: string; tag: string; logoUrl: string | null }
+  matchesPlayed: number
+  wins: number
+  losses: number
+  draws: number
+  points: number
+  goalsFor: number
+  goalsAgainst: number
+  goalDifference: number
+  rank?: number
+}
+
+export async function getStandings(): Promise<Standing[]> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/classement`, { cache: "no-store" })
+    if (!res.ok) return []
+    const data = await res.json()
+    return Array.isArray(data.standings) ? data.standings : []
+  } catch {
+    return []
+  }
+}
+
 export async function getBets(token: string): Promise<Bet[]> {
   try {
-    const res = await fetch(`${BASE_URL}/api/bets`, {
+    const res = await fetch(`${BASE_URL}/api/pari`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     if (!res.ok) return []
@@ -143,11 +186,11 @@ export async function getBets(token: string): Promise<Bet[]> {
 }
 
 
-export async function placeBet(token: string, matchId: string, predictedWinnerId: string, amount: number): Promise<Bet> {
-  const res = await fetch(`${BASE_URL}/api/bets`, {
+export async function placeBet(token: string, matchId: string, predictedWinnerId: string, amount: number, odds: number = 1.9): Promise<Bet> {
+  const res = await fetch(`${BASE_URL}/api/pari`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ matchId, predictedWinnerId, amount }),
+    body: JSON.stringify({ matchId, predictedWinnerId, amount, odds }),
   })
   const data = await res.json()
   if (!res.ok) throw new Error(data.message || "Erreur lors de la validation du pari")
