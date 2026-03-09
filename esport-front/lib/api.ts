@@ -1,6 +1,6 @@
 import { Key } from "react"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://esport-back.vercel.app"
 
 export interface Tournament {
   _id: string
