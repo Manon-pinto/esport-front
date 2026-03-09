@@ -5,7 +5,6 @@ import "./globals.css"
 import Header from "@/components/layout/Header"
 import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
-import LightningEffect from "@/components/effects/LightningEffect"
 
 const exo2 = Exo_2({
   subsets: ["latin"],
@@ -23,8 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={exo2.variable}>
       <body>
         <AuthProvider>
-          <LightningEffect />
-          <Header />
+<Header />
           <Navbar />
           <main>{children}</main>
           <Footer />

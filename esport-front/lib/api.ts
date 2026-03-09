@@ -1,6 +1,6 @@
 import { Key } from "react"
 
-const BASE_URL = "http://localhost:3000"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
 export interface Tournament {
   _id: string
@@ -65,10 +65,14 @@ export async function register(username: string, email: string, password: string
 }
 
 export async function getTournaments(): Promise<Tournament[]> {
-  const res = await fetch(`${BASE_URL}/api/tournois`, { cache: "no-store" })
-  if (!res.ok) throw new Error("Erreur API tournois")
-  const data = await res.json()
-  return Array.isArray(data) ? data : data.tournaments
+  try {
+    const res = await fetch(`${BASE_URL}/api/tournois`, { cache: "no-store" })
+    if (!res.ok) return []
+    const data = await res.json()
+    return Array.isArray(data) ? data : (data.tournaments ?? [])
+  } catch {
+    return []
+  }
 }
 
 export async function getTournamentById(id: string): Promise<Tournament | null> {
