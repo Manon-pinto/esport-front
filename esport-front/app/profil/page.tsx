@@ -107,17 +107,6 @@ export default function ProfilPage() {
                 {loading ? "…" : fullUser?.username ?? user?.username ?? "—"}
               </span>
             </div>
-            <div className="profil-info-row">
-              <span className="profil-info-key">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                </svg>
-                Email
-              </span>
-              <span className="profil-info-val">
-                {loading ? "…" : fullUser?.email ?? "—"}
-              </span>
-            </div>
             <div className="profil-info-row no-border">
               <span className="profil-info-key">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f6e05e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
