@@ -1,0 +1,46 @@
+name: CI — Tests automatisés
+
+# Déclenché à chaque push sur n'importe quelle branche
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  test:
+    name: Lancer les tests Jest
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        # Tous les "run" s'exécutent dans le dossier back-end
+        working-directory: esport-back
+
+    steps:
+      # 1. Récupère le code source
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # 2. Installe Node.js (version LTS)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: esport-back/package-lock.json
+
+      # 3. Installe les dépendances (node_modules)
+      - name: Installation des dépendances
+        run: npm ci
+
+      # 4. Lance les tests — si ça échoue, le pipeline bloque
+      - name: Lancer les tests
+        run: npm test
+        env:
+          # Variables d'environnement nécessaires pour les tests
+          # (les modèles sont mockés donc pas de vraie DB)
+          JWT_SECRET: ci_test_secret_key
+          JWT_EXPIRES_IN: 1h
+          MONGODB_URI: mongodb://localhost:27017/test_db
+          NODE_ENV: test
