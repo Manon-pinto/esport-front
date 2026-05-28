@@ -18,7 +18,6 @@ export default function DashboardStatsClient() {
     async function fetchStats() {
       try {
         setLoading(true)
-        // Récupérer le token depuis localStorage
         const token = localStorage.getItem("token")
         const data = await getDashboardStats(token || undefined)
         setStats(data)
@@ -29,7 +28,7 @@ export default function DashboardStatsClient() {
       }
     }
     fetchStats()
-  }, [user]) //recharge l'utilisateur change
+  }, [user]) 
 
   if (loading) {
     return (
