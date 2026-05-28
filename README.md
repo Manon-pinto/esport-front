@@ -1,4 +1,4 @@
-# ProLeague Tracker
+# Esport PRO
 
 ![CI](https://github.com/Manon-pinto/esport-front/actions/workflows/ci.yml/badge.svg)
 ![Tests](https://img.shields.io/badge/tests-125%20passed-brightgreen)
