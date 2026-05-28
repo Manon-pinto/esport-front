@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const BASE = "http://localhost:3000"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
 const STATUS_LABEL: Record<string, string> = { pending: "En attente", won: "Gagné", lost: "Perdu", cancelled: "Annulé" }
 const STATUS_COLOR: Record<string, string> = { pending: "info", won: "active", lost: "danger", cancelled: "inactive" }

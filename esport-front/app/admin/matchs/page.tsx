@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const BASE = "http://localhost:3000"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
 const STATUSES = ["scheduled", "live", "completed", "cancelled"]
 const STATUS_LABEL: Record<string, string> = { scheduled: "Planifié", live: "En direct", completed: "Terminé", cancelled: "Annulé", finished: "Terminé (legacy)" }

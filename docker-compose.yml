@@ -23,12 +23,13 @@ services:
     build:
       context: ./esport-front
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://${VPS_IP}:3000
     container_name: proleague-frontend
     ports:
       - "8080:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://${VPS_IP}:3000
     depends_on:
       - backend
     restart: unless-stopped

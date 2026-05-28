@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 
-const BASE = "http://localhost:3000"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
 const CARDS = [
   {

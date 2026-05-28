@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const BASE = "http://localhost:3000"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
 interface Team { _id: string; name: string; tag: string }
 

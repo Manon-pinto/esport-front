@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const BASE = "http://localhost:3000"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
 const GAMES = ["League of Legends", "CS:GO", "Valorant", "Dota 2", "Overwatch", "Rocket League", "Rainbow Six Siege"]
 const STATUSES = ["upcoming", "ongoing", "completed", "cancelled"]

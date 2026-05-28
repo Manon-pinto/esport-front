@@ -24,7 +24,7 @@ export default function ProfilPage() {
     const token = localStorage.getItem("token")
     if (!token) return
     refreshUser()
-    fetch("http://localhost:3000/api/auth/me", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => (res.ok ? res.json() : null))
