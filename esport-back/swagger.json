@@ -1,0 +1,49 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "ProLeague Tracker API",
+    "version": "1.0.0",
+    "description": "API de gestion de tournois e-sport avec système de paris virtuels"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "paths": {
+    "/auth": {
+      "post": {
+        "summary": "Authentification",
+        "tags": ["Auth"]
+      }
+    },
+    "/teams": {
+      "get": {
+        "summary": "Liste des équipes",
+        "tags": ["Teams"]
+      }
+    },
+    "/players": {
+      "get": {
+        "summary": "Liste des joueurs",
+        "tags": ["Players"]
+      }
+    },
+    "/tournois": {
+      "get": {
+        "summary": "Liste des tournois",
+        "tags": ["Tournaments"]
+      }
+    },
+    "/matches": {
+      "get": {
+        "summary": "Liste des matchs",
+        "tags": ["Matches"]
+      }
+    },
+    "/pari": {
+      "get": {
+        "summary": "Liste des paris",
+        "tags": ["Bets"]
+      }
+    }
+  }
+}
