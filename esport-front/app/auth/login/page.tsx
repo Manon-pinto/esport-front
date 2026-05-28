@@ -57,7 +57,7 @@ export default function LoginPage() {
 
         <p className="auth-footer">
           Pas encore de compte ?{" "}
-          <Link href="/auth/inscription" className="auth-link">
+          <Link href="/auth/register" className="auth-link">
             Inscription
           </Link>
         </p>
