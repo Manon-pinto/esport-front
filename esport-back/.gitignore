@@ -22,3 +22,6 @@ npm-debug.log*
 # Optional npm cache directory
 .npm
 .vercel
+
+# Jest coverage
+coverage/
