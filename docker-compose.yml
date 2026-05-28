@@ -1,0 +1,127 @@
+services:
+
+  # ── Reverse proxy + HTTPS automatique ─────────────────────────────────────
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      # Redirection HTTP → HTTPS
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+    restart: unless-stopped
+
+  # ── API Express (back-end) ─────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./esport-back
+      dockerfile: Dockerfile
+    container_name: proleague-backend
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/proleague
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=24h
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`${API_DOMAIN}`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=3000"
+
+  # ── Front-end Next.js ──────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./esport-front
+      dockerfile: Dockerfile
+    container_name: proleague-frontend
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://${API_DOMAIN}
+    depends_on:
+      - backend
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`${FRONT_DOMAIN}`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3001"
+
+  # ── Base de données MongoDB ────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: proleague-mongodb
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+    # MongoDB n'est PAS exposé sur internet, accessible uniquement en interne
+
+  # ── Interface d'administration MongoDB ────────────────────────────────────
+  mongo-express:
+    image: mongo-express:latest
+    container_name: proleague-mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USER}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mongo-express.rule=Host(`${MONGO_DOMAIN}`)"
+      - "traefik.http.routers.mongo-express.entrypoints=websecure"
+      - "traefik.http.routers.mongo-express.tls.certresolver=letsencrypt"
+      - "traefik.http.services.mongo-express.loadbalancer.server.port=8081"
+
+  # ── Visualisation des logs ─────────────────────────────────────────────────
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: proleague-dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.rule=Host(`${LOGS_DOMAIN}`)"
+      - "traefik.http.routers.dozzle.entrypoints=websecure"
+      - "traefik.http.routers.dozzle.tls.certresolver=letsencrypt"
+      - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+
+  # ── Gestion visuelle des conteneurs ───────────────────────────────────────
+  portainer:
+    image: portainer/portainer-ce:lts
+    container_name: proleague-portainer
+    command: --http-enabled
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`${PORTAINER_DOMAIN}`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls.certresolver=letsencrypt"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+volumes:
+  mongo-data:
+  portainer_data:
+  letsencrypt:

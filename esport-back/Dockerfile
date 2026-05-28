@@ -1,8 +1,7 @@
-FROM node:25.1.0-alpine
+FROM node:20-alpine
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci --omit=dev
 COPY . .
-
-EXPOSE 3001
-CMD ["node", "server.js"]
+EXPOSE 3000
+CMD ["node", "src/app.js"]
