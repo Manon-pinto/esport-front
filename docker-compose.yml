@@ -24,7 +24,7 @@ services:
       context: ./esport-front
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=http://${VPS_IP}
+        - NEXT_PUBLIC_API_URL=${VPS_IP}
     container_name: proleague-frontend
     ports:
       - "8080:3000"
