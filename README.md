@@ -30,7 +30,7 @@ npm ci
 Crée un fichier `.env` à la racine de `esport-back/` :
 
 ```env
-MONGODB_URI=mongodb://localhost:27017/proLeagueTracker
+MONGODB_URI=mongodb://localhost:port/nom-bdd
 JWT_SECRET=ton_secret_jwt
 JWT_EXPIRES_IN=24h
 PORT=3000
