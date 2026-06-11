@@ -5,7 +5,7 @@
 ![Tests front](https://img.shields.io/badge/tests%20front-21%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-72%25-yellow)
 ![Node](https://img.shields.io/badge/node-%3E%3D18-blue)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+
 
 Application web de gestion de tournois e-sport avec système de paris. Elle permet de suivre les équipes, joueurs, coachs et matchs, de visualiser les classements en temps réel, et inclut un système de paris avec gestion des points par utilisateur.
 
