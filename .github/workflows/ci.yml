@@ -44,3 +44,30 @@ jobs:
           JWT_EXPIRES_IN: 1h
           MONGODB_URI: mongodb://localhost:27017/test_db
           NODE_ENV: test
+
+  test-front:
+    name: Lancer les tests Vitest (front-end)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: esport-front
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: esport-front/package-lock.json
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Lancer les tests Vitest
+        run: npm test
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:5000

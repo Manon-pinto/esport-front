@@ -1,7 +1,8 @@
 # Esport PRO
 
 ![CI](https://github.com/Manon-pinto/esport-front/actions/workflows/ci.yml/badge.svg)
-![Tests](https://img.shields.io/badge/tests-125%20passed-brightgreen)
+![Tests back](https://img.shields.io/badge/tests%20back-125%20passed-brightgreen)
+![Tests front](https://img.shields.io/badge/tests%20front-21%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-72%25-yellow)
 ![Node](https://img.shields.io/badge/node-%3E%3D18-blue)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
@@ -52,40 +53,46 @@ La documentation Swagger est disponible sur `http://localhost:3000/api-docs`.
 
 ## Tests
 
-### Tests unitaires (Jest + Supertest)
+### Tests back-end — Jest + Supertest (125 tests)
 
 Couvrent toutes les routes de l'API : authentification, paris, équipes, matchs, joueurs, coachs et tournois. Incluent les cas d'erreur (401, 403, 404, 400) et les tests de sécurité (XSS, token invalide).
 
 ```bash
-# Lancer les tests
-npm test
+cd esport-back
+npm test                # Lance les 125 tests
+npm run test:coverage   # Avec rapport de couverture (72%)
+npm run test:watch      # Mode watch
+```
 
-# Avec rapport de couverture
-npm run test:coverage
+### Tests front-end — Vitest + Testing Library (21 tests)
 
-# Mode watch (relance à chaque modification)
-npm run test:watch
+Couvrent les composants React métier : formulaire de pari, carte de match, carte de tournoi. Incluent la validation des règles métier (mise min/max, gain potentiel), les états d'interface (badge LIVE, bouton désactivé) et les liens de navigation.
+
+```bash
+cd esport-front
+npm test                # Lance les 21 tests
+npm run test:coverage   # Avec rapport de couverture
 ```
 
 ---
 
 ## Pipeline CI/CD
 
-Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche.
+Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche. Les deux jobs (back et front) tournent en parallèle.
 
 ```
 push / pull request
-      ↓
-  Checkout du code
-      ↓
-  Setup Node.js 20
-      ↓
-  npm ci
-      ↓
-  npm test  ← 125 tests
-      ↓
-  ✅ succès → merge autorisé
-  ❌ échec  → push bloqué
+        ↓
+  ┌─────────────┐    ┌──────────────────┐
+  │  job: test  │    │  job: test-front │
+  │  (back-end) │    │  (front-end)     │
+  │  Jest       │    │  Vitest          │
+  │  125 tests  │    │  21 tests        │
+  └──────┬──────┘    └────────┬─────────┘
+         └─────────┬──────────┘
+                   ↓
+       ✅ succès → merge autorisé
+       ❌ échec  → push bloqué
 ```
 
 ---
