@@ -27,26 +27,32 @@ export default function LoginPage() {
           <p className="auth-subtitle">Bon retour sur ESPORT PRO</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" aria-label="Formulaire de connexion">
           <div className="auth-field">
-            <label className="auth-label">Email</label>
+            <label htmlFor="login-email" className="auth-label">Email</label>
             <input
+              id="login-email"
               type="email"
               className="auth-input"
               placeholder="ton@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
             />
           </div>
 
           <div className="auth-field">
-            <label className="auth-label">Mot de passe</label>
+            <label htmlFor="login-password" className="auth-label">Mot de passe</label>
             <input
+              id="login-password"
               type="password"
               className="auth-input"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
             />
           </div>
 

@@ -11,8 +11,8 @@ export default function Header() {
     <header className="header">
       <div className="header-left" />
 
-      <Link href="/" className="logo">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="#f6e05e" stroke="#f6e05e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <Link href="/" className="logo" aria-label="ESPORT PRO — retour à l'accueil">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="#f6e05e" stroke="#f6e05e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }} aria-hidden="true">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
         </svg>
         <span className="logo-text">ESPORT PRO</span>
@@ -27,13 +27,22 @@ export default function Header() {
               </svg>
               <span className="points-value">{user.points.toLocaleString()} Pts</span>
             </div>
-            <div className="user-menu" onClick={() => setMenuOpen(!menuOpen)}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6 }}>
+            <div
+              className="user-menu"
+              onClick={() => setMenuOpen(!menuOpen)}
+              role="button"
+              aria-haspopup="true"
+              aria-expanded={menuOpen}
+              aria-label={`Menu de ${user.username}`}
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && setMenuOpen(!menuOpen)}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6 }} aria-hidden="true">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
               </svg>
               <span className="username">{user.username}</span>
               {menuOpen && (
-                <div className="dropdown">
+                <div className="dropdown" role="menu">
                   <Link href="/profil" className="username">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667EEA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Mon profil
@@ -48,7 +57,7 @@ export default function Header() {
                       Admin
                     </Link>
                   )}
-                  <button className="profil-logout-btn" onClick={logout}>
+                  <button className="profil-logout-btn" onClick={logout} aria-label="Se déconnecter">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     Déconnexion
                   </button>

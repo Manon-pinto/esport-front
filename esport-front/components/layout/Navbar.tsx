@@ -17,14 +17,15 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="nav">
+    <nav className="nav" aria-label="Navigation principale">
       {/* Desktop */}
-      <div className="nav-inner">
+      <div className="nav-inner" role="list">
         {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={`nav-link${pathname === link.href ? " active" : ""}`}
+            aria-current={pathname === link.href ? "page" : undefined}
           >
             {link.label}
           </Link>
@@ -33,19 +34,26 @@ export default function Navbar() {
 
       {/* Mobile */}
       <div className="nav-mobile">
-        <button className="nav-burger" onClick={() => setOpen(!open)} aria-label="Menu">
-          <span className={`burger-line${open ? " open" : ""}`} />
-          <span className={`burger-line${open ? " open" : ""}`} />
-          <span className={`burger-line${open ? " open" : ""}`} />
+        <button
+          className="nav-burger"
+          onClick={() => setOpen(!open)}
+          aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={open}
+          aria-controls="nav-mobile-menu"
+        >
+          <span className={`burger-line${open ? " open" : ""}`} aria-hidden="true" />
+          <span className={`burger-line${open ? " open" : ""}`} aria-hidden="true" />
+          <span className={`burger-line${open ? " open" : ""}`} aria-hidden="true" />
         </button>
 
         {open && (
-          <div className="nav-mobile-menu">
+          <div id="nav-mobile-menu" className="nav-mobile-menu" role="list">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`nav-mobile-link${pathname === link.href ? " active" : ""}`}
+                aria-current={pathname === link.href ? "page" : undefined}
                 onClick={() => setOpen(false)}
               >
                 {link.label}

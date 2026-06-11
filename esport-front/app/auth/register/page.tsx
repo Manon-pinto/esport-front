@@ -35,51 +35,59 @@ export default function RegisterPage() {
           <p className="auth-subtitle">Rejoins ESPORT PRO dès maintenant</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" aria-label="Formulaire d'inscription">
           <div className="auth-field">
-            <label className="auth-label">Nom utilisateur</label>
+            <label htmlFor="register-username" className="auth-label">Nom utilisateur</label>
             <input
+              id="register-username"
               type="text"
               className="auth-input"
               placeholder="Ton pseudo"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
               required
             />
           </div>
 
           <div className="auth-field">
-            <label className="auth-label">Email</label>
+            <label htmlFor="register-email" className="auth-label">Email</label>
             <input
+              id="register-email"
               type="email"
               className="auth-input"
               placeholder="ton@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               required
             />
           </div>
 
           <div className="auth-field">
-            <label className="auth-label">Mot de passe</label>
+            <label htmlFor="register-password" className="auth-label">Mot de passe</label>
             <input
+              id="register-password"
               type="password"
               className="auth-input"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
               required
             />
           </div>
 
           <div className="auth-field">
-            <label className="auth-label">Confirmer le mot de passe</label>
+            <label htmlFor="register-confirm" className="auth-label">Confirmer le mot de passe</label>
             <input
+              id="register-confirm"
               type="password"
               className="auth-input"
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
               required
             />
           </div>
