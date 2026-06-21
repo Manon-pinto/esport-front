@@ -63,5 +63,6 @@ betSchema.index({ userId: 1 });
 betSchema.index({ matchId: 1 });
 betSchema.index({ status: 1 });
 betSchema.index({ createdAt: -1 });
+betSchema.index({ userId: 1, matchId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Bet', betSchema);

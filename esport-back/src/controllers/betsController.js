@@ -99,52 +99,73 @@ exports.createBet = async (req, res) => {
       });
     }
 
-    const user = await User.findById(userId);
-    if (user.points < amount) {
-      return res.status(400).json({ 
-        error: 'Points insuffisants',
-        message: `Vous avez ${user.points} points, mais vous essayez de parier ${amount}`
-      });
-    }
-    
     const existingBet = await Bet.findOne({ userId, matchId });
     if (existingBet) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'Pari existant',
         message: 'Vous avez déjà parié sur ce match'
       });
     }
 
-    const bet = new Bet({
-      userId,
-      matchId,
-      predictedWinnerId,
-      amount,
-      odds,
-      status: 'pending'
-    });
-    
-    await bet.save();
-    
-    user.points -= amount;
-    await user.save();
-    
+    // Débit atomique : n'aboutit que si le solde est suffisant,
+    // évite la perte de mise à jour en cas de requêtes concurrentes
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, points: { $gte: amount } },
+      { $inc: { points: -amount } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      const currentUser = await User.findById(userId);
+      return res.status(400).json({
+        error: 'Points insuffisants',
+        message: `Vous avez ${currentUser ? currentUser.points : 0} points, mais vous essayez de parier ${amount}`
+      });
+    }
+
+    let bet;
+    try {
+      bet = new Bet({
+        userId,
+        matchId,
+        predictedWinnerId,
+        amount,
+        odds,
+        status: 'pending'
+      });
+
+      await bet.save();
+    } catch (betError) {
+      // Le pari n'a pas pu être créé (ex: doublon détecté par l'index unique) :
+      // on rembourse le débit déjà effectué pour éviter une perte de points
+      await User.findByIdAndUpdate(userId, { $inc: { points: amount } });
+
+      if (betError.code === 11000) {
+        return res.status(400).json({
+          error: 'Pari existant',
+          message: 'Vous avez déjà parié sur ce match'
+        });
+      }
+
+      throw betError;
+    }
+
     res.status(201).json({
       message: 'Pari placé avec succès',
       bet,
-      remainingPoints: user.points
+      remainingPoints: updatedUser.points
     });
   } catch (error) {
     console.error('Erreur createBet:', error);
-    
+
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'Erreur de validation',
         details: messages
       });
     }
-    
+
     res.status(500).json({ error: error.message });
   }
 };
