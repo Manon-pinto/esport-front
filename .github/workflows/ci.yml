@@ -1,4 +1,4 @@
-name: CI — Tests automatisés
+name: CI — Tests & Build
 
 # Déclenché à chaque push sur n'importe quelle branche
 on:
@@ -71,3 +71,21 @@ jobs:
         run: npm test
         env:
           NEXT_PUBLIC_API_URL: http://localhost:5000
+
+  build:
+    name: Build des images Docker
+    runs-on: ubuntu-latest
+    # Ne se lance que si les deux suites de tests passent
+    needs: [test, test-front]
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # Vérifie que l'image back se construit à partir du Dockerfile
+      - name: Build de l'image backend
+        run: docker build -t esport-back:ci ./esport-back
+
+      # Vérifie que l'image front se construit (build Next.js inclus)
+      - name: Build de l'image frontend
+        run: docker build -t esport-front:ci --build-arg NEXT_PUBLIC_API_URL=http://localhost:3000 ./esport-front
