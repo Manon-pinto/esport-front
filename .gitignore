@@ -1,0 +1,14 @@
+# Environment variables (racine, utilisé par docker-compose)
+.env
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+
+# IDE
+.vscode/
+.idea/
+
+# Préparation personnelle (hors périmètre du dépôt)
+ORAL-PREP.md
