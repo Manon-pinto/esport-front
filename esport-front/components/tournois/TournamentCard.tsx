@@ -20,25 +20,9 @@ const STATUS_LABEL: Record<string, string> = {
   cancelled: "ANNULÉ",
 }
 
-const BoltCorner = ({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) => (
-  <svg
-    className={`card-bolt card-bolt-${pos}`}
-    width="18" height="18" viewBox="0 0 24 24"
-    fill="#f6e05e" stroke="#f6e05e" strokeWidth="1"
-    strokeLinecap="round" strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-  </svg>
-)
-
 export default function TournamentCard({ tournament }: { tournament: Tournament }) {
   return (
-    <div className="tournoi-card storm-card">
-      <BoltCorner pos="tl" />
-      <BoltCorner pos="tr" />
-      <BoltCorner pos="bl" />
-      <BoltCorner pos="br" />
+    <div className="tournoi-card">
       <div className="tournoi-banner">
         <span className="tournoi-banner-name">{tournament.name}</span>
       </div>

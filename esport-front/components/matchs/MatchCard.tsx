@@ -2,18 +2,6 @@ import Link from "next/link"
 import type { Match } from "@/lib/api"
 import { buttonVariants } from "@/components/ui/button"
 
-const BoltCorner = ({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) => (
-  <svg
-    className={`card-bolt card-bolt-${pos}`}
-    width="16" height="16" viewBox="0 0 24 24"
-    fill="#f6e05e" stroke="#f6e05e" strokeWidth="1"
-    strokeLinecap="round" strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-  </svg>
-)
-
 export default function MatchCard({ match }: { match: Match }) {
   const isLive = match.status === "live"
   const date = new Date(match.scheduledAt).toLocaleDateString("fr-FR", {
@@ -21,11 +9,7 @@ export default function MatchCard({ match }: { match: Match }) {
   })
 
   return (
-    <div className={`match-card storm-card ${isLive ? "match-card-live" : ""}`}>
-      <BoltCorner pos="tl" />
-      <BoltCorner pos="tr" />
-      <BoltCorner pos="bl" />
-      <BoltCorner pos="br" />
+    <div className={`match-card ${isLive ? "match-card-live" : ""}`}>
       {isLive && (
         <div className="match-live-pill">
           <span className="live-dot" />
