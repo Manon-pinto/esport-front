@@ -11,6 +11,9 @@ Application web de gestion de tournois e-sport avec système de paris. Elle perm
 
 Projet fil rouge CDA — My Digital School Bordeaux.
 
+📐 [ARCHITECTURE.md](ARCHITECTURE.md) — organisation en couches, choix techniques (MongoDB, JWT...)
+🚀 [DEPLOYMENT.md](DEPLOYMENT.md) — déploiement via Docker Compose
+
 ---
 
 ## Prérequis
@@ -78,7 +81,7 @@ npm run test:coverage   # Avec rapport de couverture
 
 ## Pipeline CI/CD
 
-Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche. Les deux jobs (back et front) tournent en parallèle.
+Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche. Les deux jobs de tests (back et front) tournent en parallèle ; un job `build` vérifie ensuite que les deux images Docker se construisent, seulement si les tests passent.
 
 ```
 push / pull request
@@ -91,9 +94,15 @@ push / pull request
   └──────┬──────┘    └────────┬─────────┘
          └─────────┬──────────┘
                    ↓
+              job: build
+        (build des images Docker
+           back + front)
+                   ↓
        ✅ succès → merge autorisé
        ❌ échec  → push bloqué
 ```
+
+Il n'y a volontairement pas de job de déploiement automatique — voir [DEPLOYMENT.md](DEPLOYMENT.md) pour le détail.
 
 ---
 
@@ -101,10 +110,12 @@ push / pull request
 
 ```
 esport/
+├── ARCHITECTURE.md                     # Organisation du code, choix techniques
+├── DEPLOYMENT.md                       # Déploiement Docker Compose
 ├── esport-back/
 │   ├── src/
 │   │   ├── app.js                      # Point d'entrée Express
-│   │   ├── controllers/
+│   │   ├── controllers/                # Adaptateurs HTTP (req/res)
 │   │   │   ├── authController.js       # Inscription, connexion, profil
 │   │   │   ├── betsController.js       # Système de paris
 │   │   │   ├── matchesController.js    # Gestion des matchs
@@ -113,6 +124,8 @@ esport/
 │   │   │   ├── coachesController.js    # Gestion des coachs
 │   │   │   ├── tournamentsController.js
 │   │   │   └── standingsController.js  # Classements
+│   │   ├── services/
+│   │   │   └── betsService.js          # Logique métier des paris (voir ARCHITECTURE.md)
 │   │   ├── middlewares/
 │   │   │   ├── authMiddleware.js       # Vérification JWT
 │   │   │   └── roleMiddleware.js       # Contrôle des rôles (admin)
@@ -127,9 +140,15 @@ esport/
 │   │   │   ├── teams.test.js
 │   │   │   └── tournaments.test.js
 │   │   └── utils/
-│   │       └── jwt.js                  # Génération et vérification des tokens
+│   │       ├── jwt.js                  # Génération et vérification des tokens
+│   │       └── AppError.js             # Erreur métier typée (service → contrôleur)
 │   └── swagger.json                    # Documentation API
-├── esport-front/                       # Interface React
+├── esport-front/                       # Interface Next.js
+│   ├── app/                            # Pages (App Router) : tournois, matchs, paris,
+│   │   │                               # admin, auth, et les pages à-propos/faq/cgu/mentions-légales
+│   │   └── globals.css
+│   └── components/
+│       └── ui/button.tsx               # Composant Button unique (cva)
 └── .github/
     └── workflows/
         └── ci.yml                      # Pipeline CI/CD
