@@ -22,7 +22,11 @@ const MATCH_ID = new mongoose.Types.ObjectId().toString();
 const TEAM1_ID = new mongoose.Types.ObjectId().toString();
 const TEAM2_ID = new mongoose.Types.ObjectId().toString();
 
-jest.mock('../models/User',  () => ({ findById: jest.fn() }));
+jest.mock('../models/User',  () => ({
+  findById: jest.fn(),
+  findOneAndUpdate: jest.fn(),
+  findByIdAndUpdate: jest.fn(),
+}));
 jest.mock('../models/Match', () => ({ findById: jest.fn() }));
 jest.mock('../models/Bet', () => {
   const mockSave = jest.fn().mockResolvedValue(true);
@@ -224,7 +228,7 @@ describe('Routes /api/pari (Bets)', () => {
     };
 
     it('201 — pari créé avec succès', async () => {
-      mockUserAuth();
+      mockUserAuth(USER_ID, 'user', 500);
 
       Match.findById.mockResolvedValue({
         _id: MATCH_ID,
@@ -233,20 +237,9 @@ describe('Routes /api/pari (Bets)', () => {
         team2Id: { toString: () => TEAM2_ID },
       });
 
-      // Le contrôleur appelle User.findById une 2e fois (pour vérifier les points)
-      // On surcharge pour ce test avec mockReturnValueOnce x2
-      const fakeUserForMiddleware = {
-        _id: USER_ID, username: 'testuser', email: 'test@test.com',
-        role: 'user', points: 500, save: jest.fn().mockResolvedValue(true),
-      };
-      const fakeUserForController = {
-        _id: USER_ID, points: 500, save: jest.fn().mockResolvedValue(true),
-      };
-      User.findById
-        .mockReturnValueOnce(makeFakeQuery(fakeUserForMiddleware))
-        .mockResolvedValueOnce(fakeUserForController);
-
       Bet.findOne.mockResolvedValue(null);
+      // Débit atomique réussi (solde suffisant)
+      User.findOneAndUpdate.mockResolvedValue({ _id: USER_ID, points: 400 });
 
       const res = await request(app)
         .post('/api/pari')
@@ -255,6 +248,7 @@ describe('Routes /api/pari (Bets)', () => {
 
       expect(res.status).toBe(201);
       expect(res.body.message).toBe('Pari placé avec succès');
+      expect(res.body.remainingPoints).toBe(400);
     });
 
     it('401 — sans token', async () => {
@@ -311,22 +305,20 @@ describe('Routes /api/pari (Bets)', () => {
     });
 
     it('400 — points insuffisants', async () => {
-      const fakeUserMiddleware = {
-        _id: USER_ID, username: 'testuser', email: 'test@test.com',
-        role: 'user', points: 50, save: jest.fn(),
-      };
-      const fakeUserController = { _id: USER_ID, points: 50, save: jest.fn() };
-
-      jwt.verifyToken.mockReturnValue({ valid: true, decoded: { userId: USER_ID, role: 'user' } });
-      User.findById
-        .mockReturnValueOnce(makeFakeQuery(fakeUserMiddleware))
-        .mockResolvedValueOnce(fakeUserController);
+      mockUserAuth(USER_ID, 'user', 50);
 
       Match.findById.mockResolvedValue({
         _id: MATCH_ID, status: 'scheduled',
         team1Id: { toString: () => TEAM1_ID },
         team2Id: { toString: () => TEAM2_ID },
       });
+      Bet.findOne.mockResolvedValue(null);
+      // Débit atomique refusé (solde insuffisant) : le service retombe sur
+      // findById pour lire le solde actuel et le mettre dans le message d'erreur
+      User.findOneAndUpdate.mockResolvedValue(null);
+      User.findById.mockReturnValueOnce(makeFakeQuery({
+        _id: USER_ID, username: 'testuser', email: 'test@test.com', role: 'user', points: 50,
+      })).mockResolvedValueOnce({ _id: USER_ID, points: 50 });
 
       const res = await request(app)
         .post('/api/pari')
@@ -338,16 +330,7 @@ describe('Routes /api/pari (Bets)', () => {
     });
 
     it('400 — pari déjà existant sur ce match', async () => {
-      const fakeUserMiddleware = {
-        _id: USER_ID, username: 'testuser', email: 'test@test.com',
-        role: 'user', points: 500, save: jest.fn(),
-      };
-      const fakeUserController = { _id: USER_ID, points: 500, save: jest.fn() };
-
-      jwt.verifyToken.mockReturnValue({ valid: true, decoded: { userId: USER_ID, role: 'user' } });
-      User.findById
-        .mockReturnValueOnce(makeFakeQuery(fakeUserMiddleware))
-        .mockResolvedValueOnce(fakeUserController);
+      mockUserAuth(USER_ID, 'user', 500);
 
       Match.findById.mockResolvedValue({
         _id: MATCH_ID, status: 'scheduled',
@@ -418,6 +401,7 @@ describe('Routes /api/pari (Bets)', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.message).toBe('Pari annulé avec succès');
+      expect(res.body.newBalance).toBe(500);
     });
 
     it('401 — sans token', async () => {
@@ -474,17 +458,18 @@ describe('Routes /api/pari (Bets)', () => {
       expect(res.body.error).toBe('Annulation impossible');
     });
 
-    it("200 — un admin peut annuler le pari de quelqu'un d'autre", async () => {
+    it("200 — un admin peut annuler le pari de quelqu'un d'autre (remboursé au propriétaire, pas à l'admin)", async () => {
       const fakeAdminMiddleware = {
         _id: ADMIN_ID, username: 'admin', email: 'admin@test.com',
         role: 'admin', points: 9999, save: jest.fn().mockResolvedValue(true),
       };
-      const fakeAdminController = { _id: ADMIN_ID, points: 9999, save: jest.fn().mockResolvedValue(true) };
+      // Deuxième appel findById : c'est le propriétaire du pari qu'on recrédite, pas l'admin connecté
+      const fakeBetOwner = { _id: USER_ID, points: 300, save: jest.fn().mockResolvedValue(true) };
 
       jwt.verifyToken.mockReturnValue({ valid: true, decoded: { userId: ADMIN_ID, role: 'admin' } });
       User.findById
         .mockReturnValueOnce(makeFakeQuery(fakeAdminMiddleware))
-        .mockResolvedValueOnce(fakeAdminController);
+        .mockResolvedValueOnce(fakeBetOwner);
 
       const fakeBet = {
         _id: BET_ID, amount: 100,
@@ -499,6 +484,8 @@ describe('Routes /api/pari (Bets)', () => {
         .set('Authorization', VALID_TOKEN);
 
       expect(res.status).toBe(200);
+      expect(res.body.newBalance).toBe(400);
+      expect(fakeBetOwner.save).toHaveBeenCalled();
     });
 
   });
