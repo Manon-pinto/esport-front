@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -94,25 +96,6 @@
     font-size: 1.5rem;
   }
 
-  .hero-btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
-    font-size: 1.25rem;
-    font-weight: 700;
-    padding: 12px 28px;
-    border-radius: 999px;
-    text-decoration: none;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-    transition: opacity 0.2s, transform 0.2s;
-  }
-
-  .hero-btn:hover {
-    opacity: 0.85;
-    transform: translateY(-2px);
-  }
-
   /* ============================================
     TOURNOIS
     ============================================ */
@@ -140,22 +123,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-  }
-
-  .voir-plus-btn {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    padding: 8px 18px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  .voir-plus-btn:hover {
-    opacity: 0.85;
   }
 
   .tournoi-card {
@@ -250,20 +217,6 @@
     background: rgba(239, 68, 68, 0.08);
     color: #94a3b8;
     border: 1px solid rgba(71, 85, 105, 0.3);
-  }
-
-  .tournoi-btn {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: opacity 0.2s;
-  }
-
-  .tournoi-btn:hover {
-    opacity: 0.85;
   }
 
   /* ============================================
@@ -372,39 +325,6 @@
     align-items: center;
   }
 
-  .btn-login {
-    color: rgba(255, 255, 255, 0.85);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.9rem;
-    padding: 0.35rem 1rem;
-    border-radius: 999px;
-    border: 1px solid rgba(102, 126, 234, 0.5);
-    transition: all 0.2s;
-  }
-
-  .btn-login:hover {
-    background: rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.8);
-  }
-
-  .btn-register {
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 0.9rem;
-    padding: 0.4rem 1.1rem;
-    border-radius: 999px;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    transition: all 0.2s;
-  }
-
-  .btn-register:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
-  }
-
   /* ============================================
     AUTH
     ============================================ */
@@ -482,23 +402,6 @@
 
   .auth-input::placeholder {
     color: rgba(255, 255, 255, 0.3);
-  }
-
-  .auth-btn {
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.85rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-top: 0.5rem;
-  }
-
-  .auth-btn:hover {
-    opacity: 0.85;
   }
 
   .auth-footer {
@@ -771,20 +674,6 @@
   .match-meta-item svg {
     flex-shrink: 0;
     opacity: 0.6;
-  }
-
-  .match-btn {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: opacity 0.2s;
-  }
-
-  .match-btn:hover {
-    opacity: 0.85;
   }
 
   /* ============================================
@@ -1181,25 +1070,6 @@
     margin-top: 0.5rem;
   }
 
-  .md-bet-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    color: #fff;
-    font-size: 0.95rem;
-    font-weight: 700;
-    padding: 10px 28px;
-    border-radius: 999px;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-    transition: opacity 0.2s, transform 0.2s;
-  }
-
-  .md-bet-btn:hover {
-    opacity: 0.87;
-    transform: translateY(-2px);
-  }
-
   /* Grille infos */
   .md-info-grid {
     max-width: 900px;
@@ -1367,8 +1237,8 @@
     .points-value         { display: none; }
     .user-menu            { padding: 0.2rem 0.5rem; }
     .username             { display: none; }
-    .btn-login            { display: none; }
-    .btn-register         { font-size: 0.8rem; padding: 0.3rem 0.8rem; }
+    .header-btn-login     { display: none; }
+    .header-btn-register  { font-size: 0.8rem; padding: 0.3rem 0.8rem; }
     .dropdown             { right: 0; left: auto; min-width: 160px; }
 
     /* Navbar */
@@ -1584,44 +1454,6 @@
   }
 
   /* Actions */
-  .profil-logout-btn {
-    -webkit-appearance: none;
-    appearance: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 8px 18px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #f87171;
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: var(--font-display);
-    transition: background 0.2s, border-color 0.2s;
-  }
-
-  .profil-logout-btn:hover {
-    background: rgba(239, 68, 68, 0.2);
-    border-color: rgba(239, 68, 68, 0.55);
-  }
-
-  /* Dans le dropdown, style plus discret */
-  .dropdown .profil-logout-btn {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-radius: 7px;
-    padding: 9px 12px;
-    text-align: left;
-  }
-
-  .dropdown .profil-logout-btn:hover {
-    background: rgba(239, 68, 68, 0.12);
-    border: none;
-  }
-
   .profil-actions-row {
     display: flex;
     align-items: center;
@@ -1970,24 +1802,6 @@
     flex-wrap: wrap;
   }
 
-  .paris-quick-btn {
-    background: rgba(102, 126, 234, 0.1);
-    border: 1px solid rgba(102, 126, 234, 0.25);
-    border-radius: 6px;
-    color: #a0aec0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    font-family: var(--font-display);
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .paris-quick-btn:hover {
-    background: rgba(102, 126, 234, 0.2);
-    color: #fff;
-  }
-
   .paris-gain-preview {
     margin-top: 8px;
     font-size: 0.82rem;
@@ -2000,42 +1814,6 @@
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-  }
-
-  .paris-submit-btn {
-    margin-top: 0;
-    padding: 0.65rem 1.5rem;
-    font-size: 0.9rem;
-    border-radius: 8px;
-    min-width: 160px;
-  }
-
-  .paris-submit-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .paris-cancel-btn {
-    background: transparent;
-    border: 1px solid rgba(102, 126, 234, 0.25);
-    border-radius: 8px;
-    color: var(--text-muted);
-    font-size: 0.88rem;
-    font-weight: 600;
-    font-family: var(--font-display);
-    padding: 0.65rem 1.2rem;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .paris-cancel-btn:hover {
-    background: rgba(102, 126, 234, 0.08);
-    color: #fff;
-  }
-
-  .paris-cancel-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
   }
 
   @media (max-width: 640px) {
@@ -2276,32 +2054,6 @@
     margin-bottom: 1.5rem;
   }
 
-  .cl-tourn-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background: rgba(102,126,234,0.07);
-    border: 1px solid rgba(102,126,234,0.2);
-    border-radius: 10px;
-    color: rgba(255,255,255,0.65);
-    font-family: var(--font-display);
-    font-size: 0.88rem;
-    font-weight: 600;
-    padding: 9px 16px;
-    cursor: pointer;
-    gap: 2px;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-  }
-
-  .cl-tourn-btn:hover { background: rgba(102,126,234,0.14); color: #fff; }
-
-  .cl-tourn-btn--active {
-    background: rgba(102,126,234,0.18);
-    border-color: #667EEA;
-    color: #fff;
-    box-shadow: 0 0 12px rgba(102,126,234,0.2);
-  }
-
   .cl-tourn-game {
     font-size: 0.68rem;
     font-weight: 500;
@@ -2500,62 +2252,6 @@
   .adm-stat-icon  { font-size: 2rem; }
   .adm-stat-count { font-size: 2rem; font-weight: 800; color: #fff; }
   .adm-stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; }
-
-  /* Buttons */
-  .adm-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid rgba(102, 126, 234, 0.3);
-    background: rgba(102, 126, 234, 0.08);
-    color: #94a3b8;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-  }
-
-  .adm-btn:hover:not(:disabled) {
-    background: rgba(102, 126, 234, 0.18);
-    color: #fff;
-  }
-
-  .adm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .adm-btn--primary {
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    border-color: transparent;
-    color: #fff;
-  }
-
-  .adm-btn--primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #7a8ff7, #8a5cb8);
-    color: #fff;
-  }
-
-  .adm-btn--danger {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: #f87171;
-  }
-
-  .adm-btn--danger:hover:not(:disabled) {
-    background: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
-  }
-
-  .adm-btn--sm {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
-  }
-
-  .adm-btn--active {
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    border-color: transparent;
-    color: #fff;
-  }
 
   /* Table */
   .adm-table-wrap {
@@ -2943,18 +2639,13 @@
     opacity: 1;
   }
 
-  /* --- Boutons: éclair sur le survol --- */
-  .hero-btn,
-  .voir-plus-btn,
-  .tournoi-btn {
+  /* --- Bouton gradient: éclair sur le survol (voir components/ui/button.tsx) --- */
+  .btn-shine {
     position: relative;
     overflow: hidden;
-    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
   }
 
-  .hero-btn::before,
-  .voir-plus-btn::before,
-  .tournoi-btn::before {
+  .btn-shine::before {
     content: '';
     position: absolute;
     top: 0;
@@ -2973,19 +2664,11 @@
     pointer-events: none;
   }
 
-  .hero-btn:hover::before,
-  .voir-plus-btn:hover::before,
-  .tournoi-btn:hover::before {
+  .btn-shine:hover::before {
     left: 150%;
   }
 
-  .hero-btn:hover {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.6), 0 0 40px rgba(102, 126, 234, 0.3);
-    transform: translateY(-3px);
-  }
-
-  .voir-plus-btn:hover,
-  .tournoi-btn:hover {
+  .btn-shine:hover {
     box-shadow: 0 0 14px rgba(102, 126, 234, 0.5);
   }
 

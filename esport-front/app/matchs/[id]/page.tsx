@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getMatchById } from "@/lib/api"
+import { buttonVariants } from "@/components/ui/button"
 
 const STATUS_LABEL: Record<string, string> = {
   scheduled:  "À VENIR",
@@ -42,7 +43,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
 
       {/* Retour */}
       <div className="md-wrapper">
-        <Link href="/matchs" className="voir-plus-btn">← Tous les matchs</Link>
+        <Link href="/matchs" className={buttonVariants({ variant: "gradient", size: "chip" })}>← Tous les matchs</Link>
       </div>
 
       {/* Hero */}
@@ -104,7 +105,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
         {/* Bouton parier */}
         {canBet && (
           <div className="md-bet-row">
-            <Link href="/paris" className="md-bet-btn">
+            <Link href="/paris" className={buttonVariants({ variant: "gradient", size: "pill-lg" })}>
               Parier sur ce match
             </Link>
           </div>

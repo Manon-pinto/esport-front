@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -57,18 +58,18 @@ export default function Header() {
                       Admin
                     </Link>
                   )}
-                  <button className="profil-logout-btn" onClick={logout} aria-label="Se déconnecter">
+                  <Button variant="destructive" size="sm" onClick={logout} aria-label="Se déconnecter">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     Déconnexion
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
           </div>
         ) : (
           <div className="auth-buttons">
-            <Link href="/auth/login" className="btn-login">Connexion</Link>
-            <Link href="/auth/register" className="btn-register">Inscription</Link>
+            <Link href="/auth/login" className={`header-btn-login ${buttonVariants({ variant: "outline", size: "pill" })}`}>Connexion</Link>
+            <Link href="/auth/register" className={`header-btn-register ${buttonVariants({ variant: "gradient", size: "pill" })}`}>Inscription</Link>
           </div>
         )}
       </div>

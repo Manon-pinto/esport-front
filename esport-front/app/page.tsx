@@ -3,6 +3,7 @@ import MatchCard from "@/components/matchs/MatchCard"
 import DashboardStatsClient from "@/components/DashboardStatsClient"
 import Link from "next/link"
 import { getTournaments, getMatchs } from "@/lib/api"
+import { buttonVariants } from "@/components/ui/button"
 
 export default async function HomePage() {
   const tournaments = await getTournaments()
@@ -15,7 +16,7 @@ export default async function HomePage() {
         <p className="hero-subtitle">
           Suivez les tournois, placez vos paris et gagnez des points virtuels !
         </p>
-        <Link href="/tournois" className="hero-btn">
+        <Link href="/tournois" className={buttonVariants({ variant: "gradient", size: "pill-lg" })}>
           Voir les tournois →
         </Link>
       </div>
@@ -25,7 +26,7 @@ export default async function HomePage() {
       <section className="tournois-section">
         <div className="tournois-section-header">
           <h2 className="section-title">Tournois en vedette</h2>
-          <Link href="/tournois" className="voir-plus-btn">Voir tout →</Link>
+          <Link href="/tournois" className={buttonVariants({ variant: "gradient", size: "chip" })}>Voir tout →</Link>
         </div>
         <div className="tournois-grid">
           {tournaments.slice(0, 2).map((t) => (
@@ -37,7 +38,7 @@ export default async function HomePage() {
       <section className="tournois-section">
         <div className="tournois-section-header">
           <h2 className="section-title">Prochains matchs</h2>
-          <Link href="/matchs" className="voir-plus-btn">Voir tout →</Link>
+          <Link href="/matchs" className={buttonVariants({ variant: "gradient", size: "chip" })}>Voir tout →</Link>
         </div>
         <div className="matches-list">
           {matchs.slice(0, 2).map((m) => (

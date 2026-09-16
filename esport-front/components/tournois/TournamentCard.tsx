@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Tournament } from "@/lib/api"
+import { buttonVariants } from "@/components/ui/button"
 
 function formatDate(raw: string) {
   const d = new Date(raw)
@@ -76,7 +77,7 @@ export default function TournamentCard({ tournament }: { tournament: Tournament 
             {tournament.status === "ongoing" && <span className="live-dot" style={{ marginRight: 5 }} />}
             {STATUS_LABEL[tournament.status] ?? tournament.status}
           </span>
-          <Link href={`/tournois/${tournament._id}`} className="tournoi-btn">Voir →</Link>
+          <Link href={`/tournois/${tournament._id}`} className={buttonVariants({ variant: "gradient", size: "chip" })}>Voir →</Link>
         </div>
       </div>
     </div>

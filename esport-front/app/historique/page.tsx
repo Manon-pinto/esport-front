@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/context/AuthContext"
 import { getBets, type Bet } from "@/lib/api"
+import { buttonVariants } from "@/components/ui/button"
 
 const STATUS_LABEL: Record<string, string> = {
   pending: "En attente",
@@ -50,7 +51,7 @@ export default function HistoriquePage() {
         {/* En-tête */}
         <div className="tournois-section-header" style={{ marginBottom: "2rem" }}>
           <div>
-            <Link href="/profil" className="voir-plus-btn">← Retour au profil</Link>
+            <Link href="/profil" className={buttonVariants({ variant: "gradient", size: "chip" })}>← Retour au profil</Link>
             <h1 className="section-title" style={{ fontSize: "1.8rem", marginTop: "0.5rem" }}>
               Historique des paris
             </h1>
@@ -89,7 +90,7 @@ export default function HistoriquePage() {
             <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
               Vous n&apos;avez pas encore placé de paris.
             </p>
-            <Link href="/matchs" className="voir-plus-btn" style={{ marginTop: "1.25rem", display: "inline-block" }}>
+            <Link href="/matchs" className={buttonVariants({ variant: "gradient", size: "chip" })} style={{ marginTop: "1.25rem", display: "inline-block" }}>
               Voir les matchs
             </Link>
           </div>

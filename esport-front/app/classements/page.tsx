@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getLeaderboard, getStandings, type LeaderboardUser, type Standing } from "@/lib/api"
+import { Button } from "@/components/ui/button"
 
 type Tab = "parieurs" | "equipes"
 
@@ -124,14 +125,16 @@ export default function ClassementsPage() {
                 {tournaments.length > 1 && (
                   <div className="cl-tourn-select">
                     {tournaments.map((t) => (
-                      <button
+                      <Button
                         key={t.id}
+                        variant="outline"
+                        active={selectedTournament === t.id}
+                        className="flex-col items-start gap-0.5"
                         onClick={() => setSelectedTournament(t.id)}
-                        className={`cl-tourn-btn${selectedTournament === t.id ? " cl-tourn-btn--active" : ""}`}
                       >
                         {t.name}
                         <span className="cl-tourn-game">{t.game}</span>
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 )}

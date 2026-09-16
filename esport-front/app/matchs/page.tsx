@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { getMatchs } from "@/lib/api"
+import { buttonVariants } from "@/components/ui/button"
 
 function formatDate(raw: string) {
   const d = new Date(raw)
@@ -149,9 +150,9 @@ function MatchRow({ match }: { match: Awaited<ReturnType<typeof getMatchs>>[numb
         </div>
         <div style={{ display: "flex", gap: "0.5rem" }}>
           {canBet && (
-            <Link href="/paris" className="match-btn">Parier</Link>
+            <Link href="/paris" className={buttonVariants({ variant: "gradient", size: "chip" })}>Parier</Link>
           )}
-          <Link href={`/matchs/${match._id}`} className="match-btn" style={{ background: "rgba(102,126,234,0.15)", border: "1px solid rgba(102,126,234,0.3)" }}>
+          <Link href={`/matchs/${match._id}`} className={buttonVariants({ variant: "outline", size: "chip" })}>
             Détails →
           </Link>
         </div>

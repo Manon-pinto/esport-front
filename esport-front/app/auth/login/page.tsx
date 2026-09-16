@@ -2,6 +2,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { login } from "@/lib/api"
+import { Button } from "@/components/ui/button"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -56,9 +57,9 @@ export default function LoginPage() {
             />
           </div>
 
-          <button type="submit" className="auth-btn">
+          <Button type="submit" variant="gradient" size="lg" className="w-full mt-2">
             Se connecter
-          </button>
+          </Button>
         </form>
 
         <p className="auth-footer">

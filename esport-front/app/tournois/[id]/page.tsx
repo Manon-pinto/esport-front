@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getTournamentById, getMatchs } from "@/lib/api"
 import MatchCard from "@/components/matchs/MatchCard"
+import { buttonVariants } from "@/components/ui/button"
 
 const STATUS_LABEL: Record<string, string> = {
   upcoming:  "À VENIR",
@@ -41,7 +42,7 @@ export default async function TournoiDetailPage({ params }: { params: Promise<{ 
 
       {/* Retour */}
       <div className="td-wrapper">
-        <Link href="/tournois" className="voir-plus-btn">← Tous les tournois</Link>
+        <Link href="/tournois" className={buttonVariants({ variant: "gradient", size: "chip" })}>← Tous les tournois</Link>
       </div>
 
       {/* Bannière */}

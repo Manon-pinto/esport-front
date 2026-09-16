@@ -2,6 +2,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { register } from "@/lib/api"
+import { Button } from "@/components/ui/button"
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("")
@@ -92,9 +93,9 @@ export default function RegisterPage() {
             />
           </div>
 
-          <button type="submit" className="auth-btn">
+          <Button type="submit" variant="gradient" size="lg" className="w-full mt-2">
             Inscription
-          </button>
+          </Button>
         </form>
 
         <p className="auth-footer">

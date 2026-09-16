@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { placeBet, type Match } from "@/lib/api"
+import { Button } from "@/components/ui/button"
 
 interface ParisFormProps {
   match: Match
@@ -108,22 +109,24 @@ export default function ParisForm({ match, userPoints, onClose, onSuccess }: Par
             />
             <div className="paris-quick-bets">
               {[50, 100, 500].map((q) => (
-                <button
+                <Button
                   key={q}
                   type="button"
-                  className="paris-quick-btn"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setAmount(String(Math.min(q, userPoints)))}
                 >
                   {q}
-                </button>
+                </Button>
               ))}
-              <button
+              <Button
                 type="button"
-                className="paris-quick-btn"
+                variant="ghost"
+                size="sm"
                 onClick={() => setAmount(String(userPoints))}
               >
                 MAX
-              </button>
+              </Button>
             </div>
           </div>
           {amount && !isNaN(parseInt(amount)) && parseInt(amount) > 0 && (
@@ -138,21 +141,22 @@ export default function ParisForm({ match, userPoints, onClose, onSuccess }: Par
 
         {/* Actions */}
         <div className="paris-form-actions">
-          <button
+          <Button
             type="submit"
-            className="auth-btn paris-submit-btn"
+            variant="gradient"
+            className="min-w-[160px]"
             disabled={submitting || !selectedTeamId || !amount}
           >
             {submitting ? "Validation…" : "Valider le pari"}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="paris-cancel-btn"
+            variant="quiet"
             onClick={onClose}
             disabled={submitting}
           >
             Annuler
-          </button>
+          </Button>
         </div>
       </form>
     </div>

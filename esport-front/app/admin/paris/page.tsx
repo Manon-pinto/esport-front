@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
 
 const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
@@ -67,13 +68,14 @@ export default function AdminParis() {
         </div>
         <div className="adm-filter-row">
           {["", "pending", "won", "lost", "cancelled"].map(s => (
-            <button
+            <Button
               key={s}
+              variant={filter === s ? "gradient" : "outline"}
+              size="sm"
               onClick={() => setFilter(s)}
-              className={`adm-btn adm-btn--sm${filter === s ? " adm-btn--active" : ""}`}
             >
               {s === "" ? "Tous" : STATUS_LABEL[s]}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/context/AuthContext"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 interface FullUser {
   id: string
@@ -123,18 +124,18 @@ export default function ProfilPage() {
 
         {/* Actions */}
         <div className="profil-actions-row">
-          <Link href="/historique" className="voir-plus-btn">
+          <Link href="/historique" className={buttonVariants({ variant: "gradient", size: "chip" })}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/>
             </svg>
             Historique des paris
           </Link>
-          <button className="profil-logout-btn" onClick={logout}>
+          <Button variant="destructive" size="default" onClick={logout}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
             Se déconnecter
-          </button>
+          </Button>
         </div>
 
       </div>

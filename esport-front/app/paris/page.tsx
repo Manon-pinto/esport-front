@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useAuth } from "@/context/AuthContext"
 import { getMatchs, type Match } from "@/lib/api"
 import PariForm from "@/components/paris/PariForm"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 function formatDate(raw: string) {
   const d = new Date(raw)
@@ -97,7 +98,7 @@ export default function ParisPage() {
             <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
               Il n&apos;y a actuellement aucun match ouvert aux paris.
             </p>
-            <Link href="/matchs" className="voir-plus-btn" style={{ marginTop: "1.25rem", display: "inline-block" }}>
+            <Link href="/matchs" className={buttonVariants({ variant: "gradient", size: "chip" })} style={{ marginTop: "1.25rem", display: "inline-block" }}>
               Voir tous les matchs
             </Link>
           </div>
@@ -152,17 +153,17 @@ export default function ParisPage() {
                       <span>{m.tournamentId.name}</span>
                     </div>
                     <div style={{ display: "flex", gap: "0.5rem" }}>
-                      <button
-                        className="match-btn"
+                      <Button
+                        variant={isSelected ? "outline" : "gradient"}
+                        size="chip"
                         onClick={() => setSelectedMatch(isSelected ? null : m)}
-                        style={isSelected ? { background: "rgba(246,224,94,0.15)", border: "1px solid #f6e05e", color: "#f6e05e" } : {}}
+                        className={isSelected ? "border-[#f6e05e] bg-[rgba(246,224,94,0.15)] text-[#f6e05e] hover:bg-[rgba(246,224,94,0.25)]" : ""}
                       >
                         {isSelected ? "Fermer" : "Parier"}
-                      </button>
+                      </Button>
                       <Link
                         href={`/matchs/${m._id}`}
-                        className="match-btn"
-                        style={{ background: "rgba(102,126,234,0.15)", border: "1px solid rgba(102,126,234,0.3)" }}
+                        className={buttonVariants({ variant: "outline", size: "chip" })}
                       >
                         Détails →
                       </Link>

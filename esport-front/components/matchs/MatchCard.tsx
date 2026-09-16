@@ -1,5 +1,6 @@
 import Link from "next/link"
 import type { Match } from "@/lib/api"
+import { buttonVariants } from "@/components/ui/button"
 
 const BoltCorner = ({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) => (
   <svg
@@ -68,7 +69,7 @@ export default function MatchCard({ match }: { match: Match }) {
             {match.tournamentId.name}
           </span>
         </div>
-        <Link href="/paris" className="match-btn">Parier</Link>
+        <Link href="/paris" className={buttonVariants({ variant: "gradient", size: "chip" })}>Parier</Link>
       </div>
     </div>
   )

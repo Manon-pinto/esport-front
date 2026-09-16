@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
 
 const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
@@ -112,7 +113,7 @@ export default function AdminTournois() {
           <h1 className="adm-page-title">Tournois</h1>
           <p style={{ color: "#64748b", fontSize: "0.85rem" }}>{items.length} tournoi(s)</p>
         </div>
-        <button className="adm-btn adm-btn--primary" onClick={openCreate}>+ Ajouter</button>
+        <Button variant="gradient" size="sm" onClick={openCreate}>+ Ajouter</Button>
       </div>
 
       {loading ? (
@@ -147,8 +148,8 @@ export default function AdminTournois() {
                     </span>
                   </td>
                   <td className="adm-td adm-actions">
-                    <button className="adm-btn adm-btn--sm" onClick={() => openEdit(item)}>Modifier</button>
-                    <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => del(item._id)}>Suppr.</button>
+                    <Button variant="outline" size="sm" onClick={() => openEdit(item)}>Modifier</Button>
+                    <Button variant="destructive" size="sm" onClick={() => del(item._id)}>Suppr.</Button>
                   </td>
                 </tr>
               ))}
@@ -201,8 +202,8 @@ export default function AdminTournois() {
               </div>
             </div>
             <div className="adm-modal-footer">
-              <button className="adm-btn" onClick={closeModal}>Annuler</button>
-              <button className="adm-btn adm-btn--primary" onClick={save} disabled={saving}>{saving ? "…" : "Enregistrer"}</button>
+              <Button variant="outline" onClick={closeModal}>Annuler</Button>
+              <Button variant="gradient" onClick={save} disabled={saving}>{saving ? "…" : "Enregistrer"}</Button>
             </div>
           </div>
         </div>
