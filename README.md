@@ -124,8 +124,9 @@ esport/
 │   │   │   ├── coachesController.js    # Gestion des coachs
 │   │   │   ├── tournamentsController.js
 │   │   │   └── standingsController.js  # Classements
-│   │   ├── services/
-│   │   │   └── betsService.js          # Logique métier des paris (voir ARCHITECTURE.md)
+│   │   ├── services/                   # Logique métier (voir ARCHITECTURE.md)
+│   │   │   ├── betsService.js
+│   │   │   └── matchesService.js
 │   │   ├── middlewares/
 │   │   │   ├── authMiddleware.js       # Vérification JWT
 │   │   │   └── roleMiddleware.js       # Contrôle des rôles (admin)
@@ -141,7 +142,8 @@ esport/
 │   │   │   └── tournaments.test.js
 │   │   └── utils/
 │   │       ├── jwt.js                  # Génération et vérification des tokens
-│   │       └── AppError.js             # Erreur métier typée (service → contrôleur)
+│   │       ├── AppError.js             # Erreur métier typée (service → contrôleur)
+│   │       └── handleError.js          # Traduit une erreur en réponse HTTP (partagé)
 │   └── swagger.json                    # Documentation API
 ├── esport-front/                       # Interface Next.js
 │   ├── app/                            # Pages (App Router) : tournois, matchs, paris,

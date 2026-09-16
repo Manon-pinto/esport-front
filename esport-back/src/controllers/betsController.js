@@ -1,20 +1,5 @@
 const betsService = require('../services/betsService');
-const AppError = require('../utils/AppError');
-
-function handleError(res, error, context) {
-  console.error(`Erreur ${context}:`, error);
-
-  if (error instanceof AppError) {
-    return res.status(error.statusCode).json({ error: error.error, ...(error.details || {}) });
-  }
-
-  if (error.name === 'ValidationError') {
-    const messages = Object.values(error.errors).map((e) => e.message);
-    return res.status(400).json({ error: 'Erreur de validation', details: messages });
-  }
-
-  res.status(500).json({ error: error.message });
-}
+const handleError = require('../utils/handleError');
 
 exports.getAllBets = async (req, res) => {
   try {

@@ -48,14 +48,22 @@ modèle métier complexe, un service ne construit jamais de réponse HTTP. Ça p
 logique de paris sans monter un serveur Express, et de changer le framework HTTP sans toucher
 aux règles métier.
 
-**Où en est cette séparation aujourd'hui :** le domaine `bets` (paris) suit ce schéma
-complètement — voir [`src/services/betsService.js`](esport-back/src/services/betsService.js) et
-[`src/controllers/betsController.js`](esport-back/src/controllers/betsController.js). Les autres
-contrôleurs (teams, matches, players...) appellent encore directement leurs modèles Mongoose ;
-c'est le prochain candidat identifié pour la même extraction, en particulier
-`matchesController.updateMatch` qui contient une logique métier non triviale (résolution
-automatique des paris quand un match se termine, remboursement s'il est annulé) mélangée à la
-mise à jour du match.
+**Où en est cette séparation aujourd'hui :** les domaines `bets` (paris) et `matches` (matchs)
+suivent ce schéma complètement — voir
+[`src/services/betsService.js`](esport-back/src/services/betsService.js) /
+[`src/services/matchesService.js`](esport-back/src/services/matchesService.js) et les
+contrôleurs correspondants. `matchesService` porte en particulier la logique la plus
+inter-domaine du projet : quand un match passe à `completed` ou `cancelled`, il résout
+automatiquement tous les paris en attente sur ce match (gagné/perdu/remboursé), ce qui touche à
+la fois `Match`, `Bet` et `User`. Les autres contrôleurs (teams, players, coaches, tournaments,
+standings, auth) appellent encore directement leurs modèles Mongoose ; ce sont les prochains
+candidats identifiés pour la même extraction, moins urgents car leur logique est plus simple
+(CRUD direct, peu de règles métier).
+
+Les deux contrôleurs migrés partagent
+[`src/utils/handleError.js`](esport-back/src/utils/handleError.js) pour traduire une `AppError`
+(ou une erreur de validation Mongoose) en réponse HTTP — évite de dupliquer ce mapping dans
+chaque contrôleur au fur et à mesure que d'autres domaines migrent.
 
 ### Exemple concret : `POST /api/pari` (placer un pari)
 
