@@ -124,17 +124,20 @@
   }
 
   .tournoi-card {
-    background: #1a1f3d;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    background: linear-gradient(155deg, #202650, #14172e);
+    border: 1px solid rgba(102, 126, 234, 0.22);
     border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     width: 100%;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .tournoi-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(102, 126, 234, 0.5);
+    border-color: rgba(102, 126, 234, 0.55);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(102, 126, 234, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .tournoi-banner {
@@ -199,9 +202,9 @@
   }
 
   .tournoi-badge-ongoing {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
   }
 
   .tournoi-badge-completed,
@@ -209,6 +212,12 @@
     background: rgba(71, 85, 105, 0.2);
     color: #64748b;
     border: 1px solid rgba(71, 85, 105, 0.3);
+  }
+
+  .tournoi-badge-live {
+    background: rgba(246, 224, 94, 0.15);
+    color: #f6e05e;
+    border: 1px solid rgba(246, 224, 94, 0.35);
   }
 
   .tournoi-badge-cancelled {
@@ -334,7 +343,7 @@
   }
 
   .auth-card {
-    background: #1a1f3d;
+    background: linear-gradient(155deg, #202650, #14172e);
     border: 1px solid rgba(102, 126, 234, 0.2);
     border-radius: 16px;
     padding: 2.5rem;
@@ -526,22 +535,25 @@
   }
 
   .match-card {
-    background: #1a1f3d;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    background: linear-gradient(155deg, #1f2549, #14172e);
+    border: 1px solid rgba(102, 126, 234, 0.22);
     border-left: 3px solid #667EEA;
     border-radius: 12px;
     padding: 18px 22px;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .match-card:hover {
     border-color: rgba(102, 126, 234, 0.5);
     transform: translateX(2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .match-card-live {
     border-left-color: #ef4444;
-    background: linear-gradient(135deg, rgba(239,68,68,0.05), #1a1f3d);
+    background: linear-gradient(135deg, rgba(239,68,68,0.08), #1a1f3d 55%);
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .match-live-pill {
@@ -1393,13 +1405,26 @@
   }
 
   .stat-card {
-    background: #1a1f3d;
+    position: relative;
+    background: linear-gradient(155deg, #1f2549, #14172e);
     border: 1px solid rgba(102, 126, 234, 0.2);
     border-radius: 12px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667EEA, #764BA2);
   }
 
   .stat-label {
@@ -2132,11 +2157,12 @@
 
   /* ── Tableau équipes ── */
   .cl-table-wrap {
-    background: #1a1f3d;
+    background: linear-gradient(155deg, #1f2549, #14172e);
     border: 1px solid rgba(102,126,234,0.2);
     border-radius: 14px;
     overflow: hidden;
     overflow-x: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   }
 
   .cl-table {
@@ -2302,7 +2328,7 @@
   }
 
   .adm-stat-card {
-    background: #1a1f3d;
+    background: linear-gradient(155deg, #1f2549, #14172e);
     border: 1px solid rgba(102, 126, 234, 0.2);
     border-radius: 12px;
     padding: 1.5rem 1rem;
@@ -2311,12 +2337,14 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    transition: border-color 0.2s, transform 0.15s;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .adm-stat-card:hover {
     border-color: rgba(102, 126, 234, 0.5);
     transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .adm-stat-icon  { font-size: 2rem; }
@@ -2325,10 +2353,11 @@
 
   /* Table */
   .adm-table-wrap {
-    background: #1a1f3d;
+    background: linear-gradient(155deg, #1f2549, #14172e);
     border: 1px solid rgba(102, 126, 234, 0.15);
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   }
 
   .adm-table {
@@ -2634,11 +2663,12 @@
   }
 
   .faq-item {
-    background: #1a1f3d;
+    background: linear-gradient(155deg, #1f2549, #14172e);
     border: 1px solid rgba(102, 126, 234, 0.18);
     border-radius: 12px;
     margin-bottom: 0.75rem;
     overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   }
 
   .faq-item summary {

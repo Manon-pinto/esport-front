@@ -8,15 +8,25 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         gradient:
-          "btn-shine bg-gradient-to-br from-[#667EEA] to-[#764BA2] text-white shadow-[0_4px_16px_rgba(102,126,234,0.4)] hover:opacity-85 hover:-translate-y-0.5",
+          "btn-shine bg-gradient-to-br from-[#7C8CF8] via-[#7B5CE8] to-[#764BA2] text-white " +
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_6px_20px_rgba(102,126,234,0.5)] " +
+          "hover:brightness-110 hover:-translate-y-0.5 " +
+          "hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_10px_28px_rgba(102,126,234,0.65)] " +
+          "active:translate-y-0 active:brightness-95",
         outline:
-          "bg-[rgba(102,126,234,0.08)] border border-[rgba(102,126,234,0.3)] text-slate-300 hover:bg-[rgba(102,126,234,0.18)] hover:text-white",
+          "bg-[rgba(102,126,234,0.1)] border-[1.5px] border-[rgba(102,126,234,0.45)] text-slate-200 " +
+          "hover:bg-[rgba(102,126,234,0.2)] hover:border-[#7C8CF8] hover:text-white hover:-translate-y-0.5 " +
+          "active:translate-y-0",
         ghost:
-          "bg-[rgba(102,126,234,0.1)] border border-[rgba(102,126,234,0.25)] text-slate-400 font-semibold hover:bg-[rgba(102,126,234,0.2)] hover:text-white",
+          "bg-[rgba(102,126,234,0.12)] border border-[rgba(102,126,234,0.3)] text-slate-300 font-semibold " +
+          "hover:bg-[rgba(102,126,234,0.25)] hover:text-white hover:border-[#7C8CF8]",
         quiet:
-          "bg-transparent border border-[rgba(102,126,234,0.25)] text-slate-400 font-semibold hover:bg-[rgba(102,126,234,0.08)] hover:text-white",
+          "bg-transparent border border-[rgba(102,126,234,0.3)] text-slate-400 font-semibold " +
+          "hover:bg-[rgba(102,126,234,0.1)] hover:text-white hover:border-[rgba(102,126,234,0.5)]",
         destructive:
-          "bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.3)] text-red-400 hover:bg-[rgba(239,68,68,0.2)] hover:text-red-300",
+          "bg-[rgba(239,68,68,0.12)] border-[1.5px] border-[rgba(239,68,68,0.4)] text-red-400 " +
+          "shadow-[0_4px_14px_rgba(239,68,68,0.15)] " +
+          "hover:bg-[rgba(239,68,68,0.22)] hover:text-red-300 hover:border-red-400 hover:-translate-y-0.5",
       },
       size: {
         sm: "text-xs px-3 py-1.5 rounded-md",
