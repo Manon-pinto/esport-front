@@ -51,7 +51,7 @@ export default function HistoriquePage() {
         {/* En-tête */}
         <div className="tournois-section-header" style={{ marginBottom: "2rem" }}>
           <div>
-            <Link href="/profil" className={buttonVariants({ variant: "gradient", size: "chip" })}>← Retour au profil</Link>
+            <Link href="/profil" className={buttonVariants({ variant: "link", size: "chip" })}>← Retour au profil</Link>
             <h1 className="section-title" style={{ fontSize: "1.8rem", marginTop: "0.5rem" }}>
               Historique des paris
             </h1>

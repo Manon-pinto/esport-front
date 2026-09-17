@@ -42,7 +42,7 @@ export default async function TournoiDetailPage({ params }: { params: Promise<{ 
 
       {/* Retour */}
       <div className="td-wrapper">
-        <Link href="/tournois" className={buttonVariants({ variant: "gradient", size: "chip" })}>← Tous les tournois</Link>
+        <Link href="/tournois" className={buttonVariants({ variant: "link", size: "chip" })}>← Tous les tournois</Link>
       </div>
 
       {/* Bannière */}

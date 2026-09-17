@@ -27,6 +27,9 @@ export const buttonVariants = cva(
           "bg-[rgba(239,68,68,0.12)] border-[1.5px] border-[rgba(239,68,68,0.4)] text-red-400 " +
           "shadow-[0_4px_14px_rgba(239,68,68,0.15)] " +
           "hover:bg-[rgba(239,68,68,0.22)] hover:text-red-300 hover:border-red-400 hover:-translate-y-0.5",
+        link:
+          "bg-transparent text-[#A5B4FC] underline-offset-4 decoration-[#A5B4FC]/50 " +
+          "hover:text-white hover:underline hover:decoration-white/70",
       },
       size: {
         sm: "text-xs px-3 py-1.5 rounded-md",

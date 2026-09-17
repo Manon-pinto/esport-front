@@ -26,7 +26,7 @@ export default async function HomePage() {
       <section className="tournois-section">
         <div className="tournois-section-header">
           <h2 className="section-title">Tournois en vedette</h2>
-          <Link href="/tournois" className={buttonVariants({ variant: "gradient", size: "chip" })}>Voir tout →</Link>
+          <Link href="/tournois" className={buttonVariants({ variant: "link", size: "chip" })}>Voir tout →</Link>
         </div>
         <div className="tournois-grid">
           {tournaments.slice(0, 2).map((t) => (
@@ -38,7 +38,7 @@ export default async function HomePage() {
       <section className="tournois-section">
         <div className="tournois-section-header">
           <h2 className="section-title">Prochains matchs</h2>
-          <Link href="/matchs" className={buttonVariants({ variant: "gradient", size: "chip" })}>Voir tout →</Link>
+          <Link href="/matchs" className={buttonVariants({ variant: "link", size: "chip" })}>Voir tout →</Link>
         </div>
         <div className="matches-list">
           {matchs.slice(0, 2).map((m) => (

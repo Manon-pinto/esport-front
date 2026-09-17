@@ -43,7 +43,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
 
       {/* Retour */}
       <div className="md-wrapper">
-        <Link href="/matchs" className={buttonVariants({ variant: "gradient", size: "chip" })}>← Tous les matchs</Link>
+        <Link href="/matchs" className={buttonVariants({ variant: "link", size: "chip" })}>← Tous les matchs</Link>
       </div>
 
       {/* Hero */}
