@@ -20,7 +20,7 @@ export default function MentionsLegalesPage() {
             </p>
             <p>
               Directrice de publication : Manon Pinto.<br />
-              Contact : <a href="mailto:contact@esport-pro.example">contact@esport-pro.example</a>
+              Contact : <a href="mailto:contact@esportpro.com">contact@esportpro.com</a>
             </p>
           </section>
 

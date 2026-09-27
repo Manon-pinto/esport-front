@@ -3,7 +3,7 @@
 ![CI](https://github.com/Manon-pinto/esport-front/actions/workflows/ci.yml/badge.svg)
 ![Tests back](https://img.shields.io/badge/tests%20back-125%20passed-brightgreen)
 ![Tests front](https://img.shields.io/badge/tests%20front-21%20passed-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-72%25-yellow)
+![Coverage](https://img.shields.io/badge/coverage-74%25-yellow)
 ![Node](https://img.shields.io/badge/node-%3E%3D18-blue)
 
 
@@ -63,7 +63,7 @@ Couvrent toutes les routes de l'API : authentification, paris, équipes, matchs,
 ```bash
 cd esport-back
 npm test                # Lance les 125 tests
-npm run test:coverage   # Avec rapport de couverture (72%)
+npm run test:coverage   # Avec rapport de couverture (74%)
 npm run test:watch      # Mode watch
 ```
 
