@@ -1,11 +1,82 @@
 # Déploiement
 
-> **État actuel :** le projet n'a plus de serveur (VPS) actif — ce document décrit la procédure
-> de déploiement telle qu'elle est prévue par le `docker-compose.yml` du dépôt, à exécuter sur un
-> serveur cible quand il y en aura un. Rien ici ne suppose qu'un environnement de production
-> tourne en ce moment.
+> **État actuel :** sans VPS, le déploiement retenu est **Vercel (front + back) + MongoDB
+> Atlas (base)**, entièrement gratuit et sans carte bancaire requise. La procédure Docker
+> Compose plus bas reste valide et documentée pour un déploiement sur un vrai serveur si
+> l'occasion se présente, mais n'est pas ce qui tourne actuellement.
 
-## Ce que la CI fait déjà (et ce qu'elle ne fait pas)
+## Déploiement actuel : Vercel + MongoDB Atlas
+
+Deux projets Vercel séparés (front et back sont deux applications indépendantes, voir
+[ARCHITECTURE.md](ARCHITECTURE.md)), plus un cluster MongoDB Atlas gratuit pour la base.
+
+### 1. Base de données — MongoDB Atlas
+
+1. Créer un compte sur [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) et un
+   cluster gratuit (tier **M0**, 512 Mo, gratuit à vie).
+2. Dans *Network Access*, autoriser `0.0.0.0/0` (Vercel n'a pas d'IP fixe, sans ça les
+   connexions depuis les fonctions serverless sont bloquées).
+3. Créer un utilisateur de base de données, récupérer la chaîne de connexion
+   `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<nom-bdd>`.
+
+### 2. Backend — Vercel
+
+Le backend est une app Express classique ; pour tourner comme fonction serverless Vercel, le
+dépôt contient :
+- [`esport-back/api/index.js`](esport-back/api/index.js) : point d'entrée qui exporte l'app
+  Express directement (un handler Express est compatible tel quel avec le runtime Node de
+  Vercel).
+- [`esport-back/vercel.json`](esport-back/vercel.json) : redirige toutes les routes vers cette
+  fonction.
+- `src/app.js` n'appelle `app.listen()` que hors environnement Vercel (variable `VERCEL`
+  positionnée automatiquement par la plateforme) — une fonction serverless ne doit pas écouter
+  de port.
+
+Sur [vercel.com](https://vercel.com) : *Add New → Project*, importer le repo GitHub
+`Manon-pinto/esport-front`, choisir **`esport-back`** comme *Root Directory*, puis définir les
+variables d'environnement :
+
+```env
+MONGODB_URI=<chaîne de connexion Atlas>
+JWT_SECRET=un_secret_long_et_aleatoire
+JWT_EXPIRES_IN=24h
+```
+
+Vercel donne une URL du type `https://esport-back-xxxx.vercel.app`.
+
+### 3. Frontend — Vercel
+
+Même principe, second projet Vercel : *Add New → Project*, même repo, **`esport-front`** comme
+*Root Directory*. Next.js est détecté automatiquement, aucune config supplémentaire nécessaire.
+Variable d'environnement à définir :
+
+```env
+NEXT_PUBLIC_API_URL=<url du projet backend ci-dessus>
+```
+
+Les variables `NEXT_PUBLIC_*` sont figées au build : après un changement de cette valeur, il
+faut redéployer (*Redeploy*) le projet front pour qu'elle soit prise en compte.
+
+### Mise à jour
+
+Vercel redéploie automatiquement les deux projets à chaque push sur `main` (déploiement continu
+intégré, pas besoin d'un job CI dédié). Un push qui casse le build est visible dans l'onglet
+*Deployments* de chaque projet Vercel.
+
+### Limite connue
+
+Le tier gratuit Vercel met les fonctions en veille après une période d'inactivité — le premier
+appel après une pause peut prendre quelques secondes (cold start). Sans impact sur le
+fonctionnement, juste sur la latence de la toute première requête.
+
+---
+
+## Alternative : Docker Compose sur un serveur (VPS)
+
+Si un serveur (VPS, Oracle Cloud Always Free...) redevient disponible, le dépôt reste prêt pour
+un déploiement auto-hébergé complet.
+
+### Ce que la CI fait déjà (et ce qu'elle ne fait pas)
 
 Le pipeline [`.github/workflows/ci.yml`](.github/workflows/ci.yml) se déclenche à chaque push et
 enchaîne deux jobs de tests (`test` pour le back, `test-front` pour le front) puis un job
@@ -25,7 +96,7 @@ push / pull request
       build                (docker build back + front, seulement si les tests passent)
 ```
 
-## Architecture de déploiement prévue
+### Architecture de déploiement prévue
 
 Le [`docker-compose.yml`](docker-compose.yml) à la racine décrit 6 services :
 
@@ -44,7 +115,7 @@ Le [`docker-compose.yml`](docker-compose.yml) à la racine décrit 6 services :
 publiques toutes faites. `mongo-express`, `dozzle` et `portainer` sont des outils d'exploitation,
 pas des dépendances du produit — ils peuvent être retirés du compose pour un déploiement minimal.
 
-## Variables d'environnement
+### Variables d'environnement
 
 Un fichier `.env` à la racine (à côté de `docker-compose.yml`, jamais commité) doit définir :
 
@@ -60,7 +131,7 @@ NEXT_PUBLIC_API_URL` au build de l'image front (les variables `NEXT_PUBLIC_*` de
 figées au build, pas lues au runtime — le front doit donc être rebuildé si l'adresse de l'API
 change).
 
-## Procédure de déploiement type
+### Procédure de déploiement type
 
 Sur le serveur cible (Docker et Docker Compose installés) :
 
@@ -88,12 +159,12 @@ docker compose down          # garde les données MongoDB (volume nommé)
 docker compose down -v       # supprime aussi les données
 ```
 
-## Développement local (sans Docker)
+### Développement local (sans Docker)
 
 Voir la section [Installation](README.md#installation) du README — `npm run dev` dans
 `esport-back/` et `esport-front/` séparément, avec MongoDB en local ou Atlas.
 
-## Pour aller plus loin
+### Pour aller plus loin
 
 Si un serveur cible redevient disponible, la suite logique est d'ajouter un job `deploy` à la
 CI : build + push des images vers un registre (GitHub Container Registry, pas de compte tiers à

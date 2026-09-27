@@ -49,8 +49,9 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
 });
 
-// En test, Supertest gère lui-même le démarrage du serveur
-if (process.env.NODE_ENV !== 'test') {
+// En test, Supertest gère lui-même le démarrage du serveur.
+// Sur Vercel, la fonction serverless exporte directement l'app sans écouter de port.
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
