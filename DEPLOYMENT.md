@@ -1,9 +1,13 @@
 # Déploiement
 
-> **État actuel :** sans VPS, le déploiement retenu est **Vercel (front + back) + MongoDB
-> Atlas (base)**, entièrement gratuit et sans carte bancaire requise. La procédure Docker
-> Compose plus bas reste valide et documentée pour un déploiement sur un vrai serveur si
-> l'occasion se présente, mais n'est pas ce qui tourne actuellement.
+> **État actuel : en ligne.** Sans VPS, le déploiement retenu est **Vercel (front + back) +
+> MongoDB Atlas (base)**, entièrement gratuit et sans carte bancaire requise.
+>
+> - Frontend : <https://esport-front.vercel.app>
+> - Backend (API) : <https://esport-back.vercel.app>
+>
+> La procédure Docker Compose plus bas reste valide et documentée pour un déploiement sur un
+> vrai serveur si l'occasion se présente, mais n'est pas ce qui tourne actuellement.
 
 ## Déploiement actuel : Vercel + MongoDB Atlas
 
@@ -42,7 +46,7 @@ JWT_SECRET=un_secret_long_et_aleatoire
 JWT_EXPIRES_IN=24h
 ```
 
-Vercel donne une URL du type `https://esport-back-xxxx.vercel.app`.
+URL actuelle : <https://esport-back.vercel.app>.
 
 ### 3. Frontend — Vercel
 
@@ -51,7 +55,7 @@ Même principe, second projet Vercel : *Add New → Project*, même repo, **`esp
 Variable d'environnement à définir :
 
 ```env
-NEXT_PUBLIC_API_URL=<url du projet backend ci-dessus>
+NEXT_PUBLIC_API_URL=https://esport-back.vercel.app
 ```
 
 Les variables `NEXT_PUBLIC_*` sont figées au build : après un changement de cette valeur, il
@@ -62,6 +66,21 @@ faut redéployer (*Redeploy*) le projet front pour qu'elle soit prise en compte.
 Vercel redéploie automatiquement les deux projets à chaque push sur `main` (déploiement continu
 intégré, pas besoin d'un job CI dédié). Un push qui casse le build est visible dans l'onglet
 *Deployments* de chaque projet Vercel.
+
+### Données de démo et premier compte admin
+
+La base démarre vide. Deux scripts dans `esport-back/scripts/` (nécessitent `MONGODB_URI` dans
+l'environnement, ex. via un `.env` local pointant sur Atlas) :
+
+```bash
+npm run seed                     # équipes, joueurs, coachs, tournois, matchs de démo
+                                  # refuse d'écraser des données existantes sans --force
+npm run promote-admin -- email@exemple.com   # passe un compte inscrit en administrateur
+```
+
+L'inscription (`/auth/register`) crée toujours un compte `role: user` — il n'y a volontairement
+pas de moyen de s'auto-promouvoir admin depuis l'interface (risque de sécurité). Le premier
+admin se crée donc : inscription normale sur le site, puis `npm run promote-admin`.
 
 ### Limite connue
 

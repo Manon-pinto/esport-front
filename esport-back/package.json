@@ -8,7 +8,9 @@
     "dev": "nodemon src/app.js",
     "test": "jest --forceExit --detectOpenHandles",
     "test:coverage": "jest --forceExit --detectOpenHandles --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "seed": "node scripts/seed.js",
+    "promote-admin": "node scripts/promote-admin.js"
   },
   "jest": {
     "testEnvironment": "node",
