@@ -95,11 +95,18 @@ place côté Vercel, une fois par projet :
    Hooks*, créer un hook sur la branche `main`, copier l'URL générée.
 2. Sur GitHub : *Settings → Secrets and variables → Actions*, créer `VERCEL_DEPLOY_HOOK_BACK`
    et `VERCEL_DEPLOY_HOOK_FRONT` avec ces deux URLs.
-3. Toujours dans les *Settings → Git* de chaque projet Vercel : désactiver le déploiement
-   automatique sur push (sinon Vercel déploierait deux fois — une fois immédiatement au push,
-   une fois via le Deploy Hook après la CI). L'option s'appelle *Ignored Build Step* : y mettre
-   `exit 0` pour que Vercel ignore systématiquement les push directs et n'accepte que les
-   déclenchements via Deploy Hook.
+3. Désactiver le déploiement automatique sur push (sinon Vercel déploierait deux fois — une
+   fois immédiatement au push, une fois via le Deploy Hook après la CI). Pas via *Ignored Build
+   Step* : ce réglage agit au niveau du build et rien ne garantit qu'il ne bloque pas aussi les
+   déploiements lancés par un Deploy Hook (non documenté clairement côté Vercel — risque de
+   tout bloquer, hooks compris). La bonne option est `git.deploymentEnabled` dans le
+   `vercel.json` de chaque projet, qui ne désactive que le déclenchement automatique par push et
+   laisse les Deploy Hooks fonctionner :
+   ```json
+   { "git": { "deploymentEnabled": { "main": false } } }
+   ```
+   Déjà en place dans [`esport-back/vercel.json`](esport-back/vercel.json) et
+   [`esport-front/vercel.json`](esport-front/vercel.json).
 
 Sans cette configuration côté Vercel, le job `deploy` échouera (secrets absents) sans bloquer
 `test`/`test-front`/`build`, qui restent la vérification de non-régression utile en soi.
