@@ -81,7 +81,7 @@ npm run test:coverage   # Avec rapport de couverture
 
 ## Pipeline CI/CD
 
-Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche. Les deux jobs de tests (back et front) tournent en parallèle ; un job `build` vérifie ensuite que les deux images Docker se construisent, seulement si les tests passent.
+Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche. Les deux jobs de tests (back et front) tournent en parallèle ; un job `build` vérifie ensuite que les deux images Docker se construisent, seulement si les tests passent. Sur `main`, un job `deploy` déclenche enfin le déploiement Vercel — uniquement si tout le reste a réussi.
 
 ```
 push / pull request
@@ -100,9 +100,12 @@ push / pull request
                    ↓
        ✅ succès → merge autorisé
        ❌ échec  → push bloqué
+                   ↓
+         job: deploy (main uniquement)
+      Deploy Hooks Vercel (front + back)
 ```
 
-Il n'y a volontairement pas de job de déploiement automatique — voir [DEPLOYMENT.md](DEPLOYMENT.md) pour le détail.
+Le déploiement en production dépend explicitement de la réussite des tests et du build (`needs: [test, test-front, build]`) — voir [DEPLOYMENT.md](DEPLOYMENT.md) pour la mise en place complète côté Vercel.
 
 ---
 

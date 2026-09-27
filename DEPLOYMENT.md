@@ -61,11 +61,48 @@ NEXT_PUBLIC_API_URL=https://esport-back.vercel.app
 Les variables `NEXT_PUBLIC_*` sont figées au build : après un changement de cette valeur, il
 faut redéployer (*Redeploy*) le projet front pour qu'elle soit prise en compte.
 
-### Mise à jour
+### Mise à jour — déploiement gardé par la CI
 
-Vercel redéploie automatiquement les deux projets à chaque push sur `main` (déploiement continu
-intégré, pas besoin d'un job CI dédié). Un push qui casse le build est visible dans l'onglet
-*Deployments* de chaque projet Vercel.
+Le déploiement n'est **pas** déclenché par l'intégration Git automatique de Vercel : il est
+gardé par le job `deploy` de [`ci.yml`](.github/workflows/ci.yml), qui ne se lance que si les
+jobs `test`, `test-front` et `build` réussissent (`needs: [test, test-front, build]`), et
+seulement sur un push vers `main`.
+
+```
+push sur main
+      │
+ ┌────┴────┐
+ ▼         ▼
+test   test-front
+ │         │
+ └────┬────┘
+      ▼
+    build          (docker build back + front)
+      ▼
+   deploy          (uniquement si tout ce qui précède a réussi)
+      │
+ ┌────┴────┐
+ ▼         ▼
+Vercel    Vercel
+ back      front
+```
+
+Concrètement, `deploy` appelle un **Deploy Hook** Vercel (une URL fournie par Vercel par
+projet, stockée comme secret GitHub) plutôt que le CLI Vercel — pas de token à gérer. Mise en
+place côté Vercel, une fois par projet :
+
+1. Sur chaque projet Vercel (`esport-back` puis `esport-front`) : *Settings → Git → Deploy
+   Hooks*, créer un hook sur la branche `main`, copier l'URL générée.
+2. Sur GitHub : *Settings → Secrets and variables → Actions*, créer `VERCEL_DEPLOY_HOOK_BACK`
+   et `VERCEL_DEPLOY_HOOK_FRONT` avec ces deux URLs.
+3. Toujours dans les *Settings → Git* de chaque projet Vercel : désactiver le déploiement
+   automatique sur push (sinon Vercel déploierait deux fois — une fois immédiatement au push,
+   une fois via le Deploy Hook après la CI). L'option s'appelle *Ignored Build Step* : y mettre
+   `exit 0` pour que Vercel ignore systématiquement les push directs et n'accepte que les
+   déclenchements via Deploy Hook.
+
+Sans cette configuration côté Vercel, le job `deploy` échouera (secrets absents) sans bloquer
+`test`/`test-front`/`build`, qui restent la vérification de non-régression utile en soi.
 
 ### Données de démo et premier compte admin
 

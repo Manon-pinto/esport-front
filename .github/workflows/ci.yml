@@ -89,3 +89,17 @@ jobs:
       # Vérifie que l'image front se construit (build Next.js inclus)
       - name: Build de l'image frontend
         run: docker build -t esport-front:ci --build-arg NEXT_PUBLIC_API_URL=http://localhost:3000 ./esport-front
+
+  deploy:
+    name: Déploiement Vercel (prod)
+    runs-on: ubuntu-latest
+    # Le déploiement ne part que si tests ET build ont réussi, et seulement sur main
+    needs: [test, test-front, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Déclenche le déploiement backend
+        run: curl -sf -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_BACK }}"
+
+      - name: Déclenche le déploiement frontend
+        run: curl -sf -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_FRONT }}"
