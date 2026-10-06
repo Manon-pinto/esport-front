@@ -1,7 +1,7 @@
 # Esport PRO
 
 ![CI](https://github.com/Manon-pinto/esport-front/actions/workflows/ci.yml/badge.svg)
-![Tests back](https://img.shields.io/badge/tests%20back-125%20passed-brightgreen)
+![Tests back](https://img.shields.io/badge/tests%20back-127%20passed-brightgreen)
 ![Tests front](https://img.shields.io/badge/tests%20front-21%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-74%25-yellow)
 ![Node](https://img.shields.io/badge/node-%3E%3D18-blue)
@@ -31,13 +31,15 @@ cd esport-back
 npm ci
 ```
 
-Crée un fichier `.env` à la racine de `esport-back/` :
+Copie `esport-back/.env.example` en `esport-back/.env` puis adapte les valeurs :
 
 ```env
 MONGODB_URI=mongodb://localhost:port/nom-bdd
 JWT_SECRET=ton_secret_jwt
 JWT_EXPIRES_IN=24h
+BCRYPT_ROUNDS=10
 PORT=3000
+FRONTEND_URL=http://localhost:3001
 ```
 
 ---
@@ -56,13 +58,13 @@ La documentation Swagger est disponible sur `http://localhost:3000/api-docs`.
 
 ## Tests
 
-### Tests back-end — Jest + Supertest (125 tests)
+### Tests back-end — Jest + Supertest (127 tests)
 
 Couvrent toutes les routes de l'API : authentification, paris, équipes, matchs, joueurs, coachs et tournois. Incluent les cas d'erreur (401, 403, 404, 400) et les tests de sécurité (XSS, token invalide).
 
 ```bash
 cd esport-back
-npm test                # Lance les 125 tests
+npm test                # Lance les 127 tests
 npm run test:coverage   # Avec rapport de couverture (74%)
 npm run test:watch      # Mode watch
 ```
@@ -90,7 +92,7 @@ push / pull request
   │  job: test  │    │  job: test-front │
   │  (back-end) │    │  (front-end)     │
   │  Jest       │    │  Vitest          │
-  │  125 tests  │    │  21 tests        │
+  │  127 tests  │    │  21 tests        │
   └──────┬──────┘    └────────┬─────────┘
          └─────────┬──────────┘
                    ↓
