@@ -275,3 +275,25 @@ describe('Routes /api/auth', () => {
   });
 
 });
+
+describe('CORS', () => {
+
+  it('autorise le frontend de production', async () => {
+    const res = await request(app)
+      .options('/api/auth/login')
+      .set('Origin', 'https://esport-front.vercel.app')
+      .set('Access-Control-Request-Method', 'POST');
+
+    expect(res.headers['access-control-allow-origin']).toBe('https://esport-front.vercel.app');
+  });
+
+  it("refuse une origine inconnue (pas d'en-tête Access-Control-Allow-Origin)", async () => {
+    const res = await request(app)
+      .options('/api/auth/login')
+      .set('Origin', 'https://site-malveillant.example')
+      .set('Access-Control-Request-Method', 'POST');
+
+    expect(res.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+});
