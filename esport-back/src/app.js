@@ -9,6 +9,10 @@ const app = express();
 
 const uri = process.env.MONGODB_URI
 
+// Injection NoSQL : un opérateur venu du client ({ "$ne": null }) est neutralisé
+// en { "$eq": { "$ne": null } } dans tous les filtres de requête Mongoose.
+mongoose.set('sanitizeFilter', true);
+
 mongoose
   .connect(uri)
   .then(() => console.log("✅ Connexion à MongoDB réussie !"))
