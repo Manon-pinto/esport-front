@@ -11,9 +11,6 @@ Application web de gestion de tournois e-sport avec système de paris. Elle perm
 
 Projet fil rouge CDA — My Digital School Bordeaux.
 
-📐 [ARCHITECTURE.md](ARCHITECTURE.md) — organisation en couches, choix techniques (MongoDB, JWT...)
-🚀 [DEPLOYMENT.md](DEPLOYMENT.md) — déploiement via Docker Compose
-
 ---
 
 ## Prérequis
@@ -79,38 +76,6 @@ npm test                # Lance les 21 tests
 npm run test:coverage   # Avec rapport de couverture
 ```
 
----
-
-## Pipeline CI/CD
-
-Un pipeline GitHub Actions se déclenche automatiquement à chaque push sur n'importe quelle branche. Les deux jobs de tests (back et front) tournent en parallèle ; un job `build` vérifie ensuite que les deux images Docker se construisent, seulement si les tests passent. Sur `main`, un job `deploy` déclenche enfin le déploiement Vercel — uniquement si tout le reste a réussi.
-
-```
-push / pull request
-        ↓
-  ┌─────────────┐    ┌──────────────────┐
-  │  job: test  │    │  job: test-front │
-  │  (back-end) │    │  (front-end)     │
-  │  Jest       │    │  Vitest          │
-  │  127 tests  │    │  21 tests        │
-  └──────┬──────┘    └────────┬─────────┘
-         └─────────┬──────────┘
-                   ↓
-              job: build
-        (build des images Docker
-           back + front)
-                   ↓
-       ✅ succès → merge autorisé
-       ❌ échec  → push bloqué
-                   ↓
-         job: deploy (main uniquement)
-      Deploy Hooks Vercel (front + back)
-```
-
-Le déploiement en production dépend explicitement de la réussite des tests et du build (`needs: [test, test-front, build]`) — voir [DEPLOYMENT.md](DEPLOYMENT.md) pour la mise en place complète côté Vercel.
-
----
-
 ## Structure du projet
 
 ```
@@ -161,7 +126,6 @@ esport/
         └── ci.yml                      # Pipeline CI/CD
 ```
 
----
 
 ## Routes API
 
